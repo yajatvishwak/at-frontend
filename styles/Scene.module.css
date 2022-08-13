@@ -1,0 +1,7 @@
+.min-h-full {
+  min-height: 100%;
+}
+
+.bg-red-600 {
+  background-color: rgb(220 38 38);
+}
