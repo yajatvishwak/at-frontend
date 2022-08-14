@@ -9,5 +9,11 @@ export interface Element {
     x: number;
     y: number;
   };
+  scale: {
+    width: number;
+    height: number;
+  };
+  angle: number;
+  // zindex: number;
   element: Image | Text | TTSTweet | Tweet;
 }

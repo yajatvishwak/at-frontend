@@ -11,8 +11,19 @@ import clone from "just-clone";
 interface EditorProps {}
 
 const Editor: FunctionComponent<EditorProps> = () => {
+  const vidMetaData = useRef<{
+    bgVid: string;
+    bgAudio: string;
+    bgVidAudioLevel: number;
+    bgAudioLevel: number;
+  }>();
   const [selectedScene, setSelectedScene] = useState<number>(0);
   const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
+  const [bgVid, setbgVid] = useState<string>("");
+  const [bgAudio, setbgAudio] = useState<string>("");
+  const [bgVidAudioLevel, setbgVidAudioLevel] = useState<number>(50);
+  const [bgAudioLevel, setbgAudioLevel] = useState<number>(50);
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [vid, setVid] = useState<Scene[]>([
     {
@@ -27,30 +38,18 @@ const Editor: FunctionComponent<EditorProps> = () => {
             tlink: "https://i.imgur.com/hfp6yI4.png",
           },
           position: { x: 40, y: 50 },
-        },
-        {
-          eid: uuidv4(),
-          element: {
-            id: "1553377779810459648",
-            type: "TTSTweet",
-            tlink: "https://i.imgur.com/hfp6yI4.png",
-            audiolink:
-              "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+          scale: {
+            height: 100,
+            width: 400,
           },
-          position: { x: 40, y: 50 },
-        },
-        {
-          eid: uuidv4(),
-          element: {
-            id: uuidv4(),
-            type: "Text",
-            content: "adsfsrg",
-          },
-          position: { x: 140, y: 50 },
+          angle: 42,
         },
       ],
     },
   ]);
+  useEffect(() => {
+    vidMetaData.current = { bgAudio, bgVid, bgAudioLevel, bgVidAudioLevel };
+  }, [bgAudio, bgVid, bgAudioLevel, bgVidAudioLevel]);
   //www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3
 
   useEffect(() => {
@@ -63,11 +62,15 @@ const Editor: FunctionComponent<EditorProps> = () => {
         fabric.Image.fromURL(ele.element.tlink, (img) => {
           if (canvas) {
             img.set({
-              // @ts-ignore:next-line
+              // @ts-ignore
               id: ele.eid,
               top: ele.position.x,
+              centeredRotation: true,
+              angle: ele.angle,
               left: ele.position.y,
             });
+            img.scaleToHeight(ele.scale.height);
+            img.scaleToWidth(ele.scale.width);
             canvas.add(img);
           }
         });
@@ -80,7 +83,11 @@ const Editor: FunctionComponent<EditorProps> = () => {
               id: ele.eid,
               top: ele.position.x,
               left: ele.position.y,
+              centeredRotation: true,
+              angle: ele.angle,
             });
+            img.scaleToHeight(ele.scale.height);
+            img.scaleToWidth(ele.scale.width);
             canvas.add(img);
           }
         });
@@ -93,7 +100,13 @@ const Editor: FunctionComponent<EditorProps> = () => {
               id: ele.eid,
               top: ele.position.x,
               left: ele.position.y,
+              width: ele.scale.width,
+              height: ele.scale.height,
+              centeredRotation: true,
+              angle: ele.angle,
             });
+            img.scaleToHeight(ele.scale.height);
+            img.scaleToWidth(ele.scale.width);
             canvas.add(img);
           }
         });
@@ -103,19 +116,28 @@ const Editor: FunctionComponent<EditorProps> = () => {
           fill: "white",
           top: ele.position.x,
           left: ele.position.y,
+          centeredRotation: true,
+          angle: ele.angle,
           // @ts-ignore:next-line
           id: ele.eid,
         });
+        txt.scaleToHeight(ele.scale.height);
+        txt.scaleToWidth(ele.scale.width);
 
         canvas.add(txt);
       }
     });
 
     canvas.on("object:modified", function (e) {
-      // @ts-ignore:next-line
-      console.log(e.target.id, vid.length);
-      // @ts-ignore:next-line
-      updatePos(e.target.id, e.target?.top || 42, e.target?.left || 42);
+      updatePosScaleAngle(
+        // @ts-ignore
+        e.target.id,
+        e.target?.top || 42,
+        e.target?.left || 42,
+        e.target?.getScaledHeight() || 1000,
+        e.target?.getScaledWidth() || 1000,
+        e.target?.angle || 0
+      );
     });
   }, [canvas]);
   // @ts-ignore:next-line
@@ -128,17 +150,28 @@ const Editor: FunctionComponent<EditorProps> = () => {
     setCanvas(canvas);
     return () => canvas.dispose();
   }, [canvasRef, vid, selectedScene]);
-  function updatePos(id: string, x: number, y: number) {
+
+  function updatePosScaleAngle(
+    id: string,
+    x: number,
+    y: number,
+    h: number,
+    w: number,
+    angle: number
+  ) {
     let pvid = clone(vid);
     console.log("this is bruu", pvid[selectedScene].timeline, id);
     const v = pvid[selectedScene].timeline.findIndex((item) => item.eid === id);
     console.log(v, "found");
     if (v !== -1) {
       pvid[selectedScene].timeline[v].position = { x, y };
+      pvid[selectedScene].timeline[v].scale = { height: h, width: w };
+      pvid[selectedScene].timeline[v].angle = angle;
     }
     // console.log("this do be the timeline", pvid[selectedScene].timeline);
     setVid(pvid);
   }
+
   function addScene() {
     let tvid = clone(vid);
     tvid = [...tvid, { sceneid: uuidv4(), duration: 0, timeline: [] }];
@@ -163,6 +196,11 @@ const Editor: FunctionComponent<EditorProps> = () => {
         tlink: "https://i.imgur.com/KJZsuBR.png",
       },
       position: { x: 10, y: 20 },
+      scale: {
+        height: 100,
+        width: 20,
+      },
+      angle: 0,
     });
     setVid(pvid);
   }
@@ -178,6 +216,11 @@ const Editor: FunctionComponent<EditorProps> = () => {
         tlink: "https://i.imgur.com/KJZsuBR.png",
       },
       position: { x: 10, y: 20 },
+      scale: {
+        height: 100,
+        width: 20,
+      },
+      angle: 0,
     });
     setVid(pvid);
   }
@@ -192,6 +235,11 @@ const Editor: FunctionComponent<EditorProps> = () => {
           "https://c8.alamy.com/comp/DA9PEC/india-south-india-asia-karnataka-bangalore-city-downtown-skyline-business-DA9PEC.jpg",
       },
       position: { x: 10, y: 20 },
+      scale: {
+        height: 100,
+        width: 20,
+      },
+      angle: 0,
     });
     setVid(pvid);
   }
@@ -206,6 +254,11 @@ const Editor: FunctionComponent<EditorProps> = () => {
         content: text,
       },
       position: { x: 10, y: 20 },
+      scale: {
+        height: 100,
+        width: 20,
+      },
+      angle: 0,
     });
     setVid(pvid);
   }
@@ -233,7 +286,24 @@ const Editor: FunctionComponent<EditorProps> = () => {
             addScene={addScene}
           />
           <SceneControl selectedScene={selectedScene} vid={vid} />
-          <SceneProperties />
+          <SceneProperties
+            setBgVid={(bg: string) => {
+              setbgVid(bg);
+            }}
+            bgVid={bgVid}
+            setBgAudio={(bg: string) => {
+              setbgAudio(bg);
+            }}
+            bgAudio={bgAudio}
+            bgVidAudioLevel={bgVidAudioLevel}
+            setbgVidAudioLevel={(level: number) => {
+              setbgVidAudioLevel(level);
+            }}
+            bgAudioLevel={bgAudioLevel}
+            setbgAudioLevel={(level: number) => {
+              setbgAudioLevel(level);
+            }}
+          />
         </div>
       </div>
     </section>
