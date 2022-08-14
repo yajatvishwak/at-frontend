@@ -1,4 +1,4 @@
-import ReactAudioPlayer from "react-audio-player";
+import ReactTooltip from "react-tooltip";
 import { FunctionComponent, useEffect, useRef, useState } from "react";
 import { fabric } from "fabric";
 import { Scene } from "../_types/Scene";
@@ -43,6 +43,37 @@ const Editor: FunctionComponent<EditorProps> = () => {
             width: 400,
           },
           angle: 42,
+          zindex: 0,
+        },
+        {
+          eid: uuidv4(),
+          element: {
+            id: "1553377779810459648",
+            type: "Text",
+            content: "asfg",
+          },
+          position: { x: 40, y: 50 },
+          scale: {
+            height: 100,
+            width: 400,
+          },
+          angle: 0,
+          zindex: 1,
+        },
+        {
+          eid: uuidv4(),
+          element: {
+            id: "1553377779810459648",
+            type: "Text",
+            content: "hset",
+          },
+          position: { x: 40, y: 50 },
+          scale: {
+            height: 100,
+            width: 400,
+          },
+          angle: 0,
+          zindex: 2,
         },
       ],
     },
@@ -69,9 +100,11 @@ const Editor: FunctionComponent<EditorProps> = () => {
               angle: ele.angle,
               left: ele.position.y,
             });
+
             img.scaleToHeight(ele.scale.height);
             img.scaleToWidth(ele.scale.width);
             canvas.add(img);
+            img.moveTo(ele.zindex);
           }
         });
       }
@@ -89,6 +122,7 @@ const Editor: FunctionComponent<EditorProps> = () => {
             img.scaleToHeight(ele.scale.height);
             img.scaleToWidth(ele.scale.width);
             canvas.add(img);
+            img.moveTo(ele.zindex);
           }
         });
       }
@@ -108,6 +142,7 @@ const Editor: FunctionComponent<EditorProps> = () => {
             img.scaleToHeight(ele.scale.height);
             img.scaleToWidth(ele.scale.width);
             canvas.add(img);
+            img.moveTo(ele.zindex);
           }
         });
       }
@@ -121,10 +156,13 @@ const Editor: FunctionComponent<EditorProps> = () => {
           // @ts-ignore:next-line
           id: ele.eid,
         });
+
         txt.scaleToHeight(ele.scale.height);
         txt.scaleToWidth(ele.scale.width);
-
         canvas.add(txt);
+        txt.moveTo(ele.zindex);
+
+        // txt.moveTo(1);
       }
     });
 
@@ -151,6 +189,46 @@ const Editor: FunctionComponent<EditorProps> = () => {
     return () => canvas.dispose();
   }, [canvasRef, vid, selectedScene]);
 
+  function getZIndex() {
+    return vid[selectedScene].timeline.length - 1;
+  }
+  function custombringForward(zLevel: number) {
+    console.log("passed:", zLevel);
+    if (zLevel >= vid[selectedScene].timeline.length - 1) return;
+    let pvid = clone(vid);
+    let currZ = pvid[selectedScene].timeline.findIndex(
+      (item) => item.zindex === zLevel
+    );
+    let reqZ = pvid[selectedScene].timeline.findIndex(
+      (item) => item.zindex === zLevel + 1
+    );
+    pvid[selectedScene].timeline[currZ].zindex += 1;
+    console.log("found next higher z at index", reqZ);
+    if (reqZ !== -1) {
+      pvid[selectedScene].timeline[reqZ].zindex -= 1;
+    }
+
+    console.log(pvid[selectedScene].timeline);
+    setVid(pvid);
+  }
+  function customsendBack(zLevel: number) {
+    console.log("passed:", zLevel);
+    if (zLevel <= 0) return;
+    let pvid = clone(vid);
+    let currZ = pvid[selectedScene].timeline.findIndex(
+      (item) => item.zindex === zLevel
+    );
+    let reqZ = pvid[selectedScene].timeline.findIndex(
+      (item) => item.zindex === zLevel - 1
+    );
+    pvid[selectedScene].timeline[currZ].zindex -= 1;
+    console.log("found next higher z at index", reqZ);
+    if (reqZ !== -1) {
+      pvid[selectedScene].timeline[reqZ].zindex += 1;
+    }
+    console.log(pvid[selectedScene].timeline);
+    setVid(pvid);
+  }
   function updatePosScaleAngle(
     id: string,
     x: number,
@@ -201,6 +279,7 @@ const Editor: FunctionComponent<EditorProps> = () => {
         width: 20,
       },
       angle: 0,
+      zindex: getZIndex(),
     });
     setVid(pvid);
   }
@@ -221,6 +300,7 @@ const Editor: FunctionComponent<EditorProps> = () => {
         width: 20,
       },
       angle: 0,
+      zindex: getZIndex(),
     });
     setVid(pvid);
   }
@@ -240,6 +320,7 @@ const Editor: FunctionComponent<EditorProps> = () => {
         width: 20,
       },
       angle: 0,
+      zindex: getZIndex(),
     });
     setVid(pvid);
   }
@@ -255,58 +336,126 @@ const Editor: FunctionComponent<EditorProps> = () => {
       },
       position: { x: 10, y: 20 },
       scale: {
-        height: 100,
-        width: 20,
+        height: 300,
+        width: 150,
       },
       angle: 0,
+      zindex: getZIndex(),
     });
     setVid(pvid);
   }
   return (
-    <section className="bg-slate-900 text-white p-4 gap-4 min-h-screen h-full grid grid-cols-7 ">
-      <div className="border col-span-2 grid place-items-center">
-        <canvas className="border rounded-2xl" ref={canvasRef}></canvas>
-      </div>
-      <div className="border col-span-5 flex flex-col h-full">
-        <Toolbox
-          addText={addText}
-          addJustTweet={addJustTweet}
-          addImage={addImage}
-          addTTSTweet={addTTSTweet}
-        />
-        <div
-          className="border border-purple-500 p-4  grid grid-cols-5 gap-4  
-        "
-        >
-          <SceneList
-            vid={vid}
-            selectedScene={selectedScene}
-            setSelectedScene={setSelectedScene}
-            removeScene={removeScene}
-            addScene={addScene}
-          />
-          <SceneControl selectedScene={selectedScene} vid={vid} />
-          <SceneProperties
-            setBgVid={(bg: string) => {
-              setbgVid(bg);
-            }}
-            bgVid={bgVid}
-            setBgAudio={(bg: string) => {
-              setbgAudio(bg);
-            }}
-            bgAudio={bgAudio}
-            bgVidAudioLevel={bgVidAudioLevel}
-            setbgVidAudioLevel={(level: number) => {
-              setbgVidAudioLevel(level);
-            }}
-            bgAudioLevel={bgAudioLevel}
-            setbgAudioLevel={(level: number) => {
-              setbgAudioLevel(level);
-            }}
-          />
+    <>
+      <ReactTooltip className="text-white" />
+      <section className="bg-slate-900 text-white p-4 gap-4 min-h-screen h-full grid grid-cols-7 ">
+        <div className="border col-span-2 grid place-items-center">
+          <canvas className="border rounded-2xl" ref={canvasRef}></canvas>
+          <div className="flex">
+            <div
+              data-tip="Bring Forward"
+              className="cursor-pointer"
+              onClick={() => {
+                if (canvas?.getActiveObject()) {
+                  let z = vid[selectedScene].timeline.find(
+                    //@ts-ignore
+                    (item) => item.eid === canvas?.getActiveObject().id
+                  )?.zindex;
+                  console.log("this do be z", z);
+                  if (z !== undefined) custombringForward(z);
+                } else {
+                  alert("select element to bring front");
+                }
+              }}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M5 10l7-7m0 0l7 7m-7-7v18"
+                />
+              </svg>
+            </div>
+            <div
+              data-tip="Send Back"
+              className="cursor-pointer"
+              onClick={() => {
+                if (canvas?.getActiveObject()) {
+                  let z = vid[selectedScene].timeline.find(
+                    //@ts-ignore
+                    (item) => item.eid === canvas?.getActiveObject().id
+                  )?.zindex;
+                  console.log("this do be z", z);
+                  if (z !== undefined) customsendBack(z);
+                } else {
+                  alert("select element to send back");
+                }
+              }}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M19 14l-7 7m0 0l-7-7m7 7V3"
+                />
+              </svg>
+            </div>
+          </div>
         </div>
-      </div>
-    </section>
+        <div className="border col-span-5 flex flex-col h-full">
+          <Toolbox
+            addText={addText}
+            addJustTweet={addJustTweet}
+            addImage={addImage}
+            addTTSTweet={addTTSTweet}
+          />
+          <div
+            className="border border-purple-500 p-4  grid grid-cols-5 gap-4  
+        "
+          >
+            <SceneList
+              vid={vid}
+              selectedScene={selectedScene}
+              setSelectedScene={setSelectedScene}
+              removeScene={removeScene}
+              addScene={addScene}
+            />
+            <SceneControl selectedScene={selectedScene} vid={vid} />
+            <SceneProperties
+              setBgVid={(bg: string) => {
+                setbgVid(bg);
+              }}
+              bgVid={bgVid}
+              setBgAudio={(bg: string) => {
+                setbgAudio(bg);
+              }}
+              bgAudio={bgAudio}
+              bgVidAudioLevel={bgVidAudioLevel}
+              setbgVidAudioLevel={(level: number) => {
+                setbgVidAudioLevel(level);
+              }}
+              bgAudioLevel={bgAudioLevel}
+              setbgAudioLevel={(level: number) => {
+                setbgAudioLevel(level);
+              }}
+            />
+          </div>
+        </div>
+      </section>
+    </>
   );
 };
 

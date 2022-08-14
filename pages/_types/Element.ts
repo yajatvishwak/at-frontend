@@ -14,6 +14,6 @@ export interface Element {
     height: number;
   };
   angle: number;
-  // zindex: number;
+  zindex: number;
   element: Image | Text | TTSTweet | Tweet;
 }
