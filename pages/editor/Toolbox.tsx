@@ -3,11 +3,15 @@ import { FunctionComponent } from "react";
 interface ToolboxProps {
   addText: (text: string) => void;
   addJustTweet: () => void;
+  addImage: () => void;
+  addTTSTweet: () => void;
 }
 
 const Toolbox: FunctionComponent<ToolboxProps> = ({
   addText,
+  addImage,
   addJustTweet,
+  addTTSTweet,
 }) => {
   return (
     <div className="p-4 mt-auto">
@@ -56,7 +60,10 @@ const Toolbox: FunctionComponent<ToolboxProps> = ({
           </div>
           <div>Text</div>
         </div>
-        <div className="rounded-xl hover:scale-95 transition-all hover:bg-slate-700 cursor-pointer flex flex-col gap-4 items-center justify-center p-10 bg-slate-800">
+        <div
+          onClick={addImage}
+          className="rounded-xl hover:scale-95 transition-all hover:bg-slate-700 cursor-pointer flex flex-col gap-4 items-center justify-center p-10 bg-slate-800"
+        >
           <div className="font-bold text-4xl opacity-50">
             <svg
               className="w-12 h-12"
@@ -92,7 +99,10 @@ const Toolbox: FunctionComponent<ToolboxProps> = ({
           </div>
           <div>Just Tweet</div>
         </div>
-        <div className="rounded-xl hover:scale-95 transition-all hover:bg-slate-700 cursor-pointer flex flex-col gap-4 items-center justify-center p-10 bg-slate-800">
+        <div
+          onClick={addTTSTweet}
+          className="rounded-xl hover:scale-95 transition-all hover:bg-slate-700 cursor-pointer flex flex-col gap-4 items-center justify-center p-10 bg-slate-800"
+        >
           <div className="font-bold text-4xl opacity-50">
             <svg
               width="50"
@@ -114,25 +124,6 @@ const Toolbox: FunctionComponent<ToolboxProps> = ({
             </svg>
           </div>
           <div>TTS Tweet</div>
-        </div>
-        <div className="rounded-xl hover:scale-95 transition-all hover:bg-slate-700 cursor-pointer flex flex-col gap-4 items-center justify-center p-10 bg-slate-800">
-          <div className="font-bold text-4xl opacity-50">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-12 w-12"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"
-              />
-            </svg>
-          </div>
-          <div>Sound</div>
         </div>
       </div>
     </div>

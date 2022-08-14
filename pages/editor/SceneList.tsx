@@ -19,7 +19,7 @@ const SceneList: FunctionComponent<SceneListProps> = ({
   return (
     <div className="rounded-2xl bg-slate-800 p-4 ">
       <div className="flex justify-between items-center">
-        <div>Scene</div>
+        <div className="font-bold opacity-50">Scene</div>
         <div
           onClick={addScene}
           className="rounded-full cursor-pointer px-3 hover:bg-blue-500 transition-all"

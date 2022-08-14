@@ -1,21 +1,8 @@
-import { Canvas, IImageOptions, IObjectOptions } from "fabric/fabric-impl";
-import {
-  FabricJSCanvas,
-  FabricJSEditor,
-  FabricJSEditorHook,
-  useFabricJSEditor,
-} from "fabricjs-react";
-import {
-  FunctionComponent,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import ReactAudioPlayer from "react-audio-player";
+import { FunctionComponent, useEffect, useRef, useState } from "react";
 import { fabric } from "fabric";
 import { Scene } from "../_types/Scene";
 import { v4 as uuidv4 } from "uuid";
-import { Element } from "../_types/Element";
 import Toolbox from "./Toolbox";
 import SceneList from "./SceneList";
 import SceneControl from "./SceneControl";
@@ -53,6 +40,7 @@ const Editor: FunctionComponent<EditorProps> = () => {
       ],
     },
   ]);
+  //www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3
 
   useEffect(() => {
     if (!canvas) {
@@ -64,7 +52,33 @@ const Editor: FunctionComponent<EditorProps> = () => {
         fabric.Image.fromURL(ele.element.tlink, (img) => {
           if (canvas) {
             img.set({
-              // @ts-ignore
+              // @ts-ignore:next-line
+              id: ele.eid,
+              top: ele.position.x,
+              left: ele.position.y,
+            });
+            canvas.add(img);
+          }
+        });
+      }
+      if (ele.element.type === "TTSTweet") {
+        fabric.Image.fromURL(ele.element.tlink, (img) => {
+          if (canvas) {
+            img.set({
+              // @ts-ignore:next-line
+              id: ele.eid,
+              top: ele.position.x,
+              left: ele.position.y,
+            });
+            canvas.add(img);
+          }
+        });
+      }
+      if (ele.element.type === "Image") {
+        fabric.Image.fromURL(ele.element.ilink, (img) => {
+          if (canvas) {
+            img.set({
+              // @ts-ignore:next-line
               id: ele.eid,
               top: ele.position.x,
               left: ele.position.y,
@@ -74,26 +88,26 @@ const Editor: FunctionComponent<EditorProps> = () => {
         });
       }
       if (ele.element.type === "Text") {
-        canvas.add(
-          new fabric.Text(ele.element.content, {
-            fill: "white",
-            top: ele.position.x,
-            left: ele.position.y,
-            // @ts-ignore
-            id: ele.eid,
-          })
-        );
+        const txt = new fabric.Text(ele.element.content, {
+          fill: "white",
+          top: ele.position.x,
+          left: ele.position.y,
+          // @ts-ignore:next-line
+          id: ele.eid,
+        });
+
+        canvas.add(txt);
       }
     });
 
     canvas.on("object:modified", function (e) {
-      // @ts-ignore
+      // @ts-ignore:next-line
       console.log(e.target.id, vid.length);
-      // @ts-ignore
+      // @ts-ignore:next-line
       updatePos(e.target.id, e.target?.top || 42, e.target?.left || 42);
     });
   }, [canvas]);
-  // @ts-ignore
+  // @ts-ignore:next-line
   useEffect(() => {
     const canvas = new fabric.Canvas(canvasRef.current, {
       height: 720,
@@ -141,6 +155,21 @@ const Editor: FunctionComponent<EditorProps> = () => {
     });
     setVid(pvid);
   }
+  function addTTSTweet() {
+    let pvid = [...vid];
+    pvid[selectedScene].timeline.push({
+      eid: "JT-" + uuidv4(),
+      element: {
+        type: "TTSTweet",
+        audioLink:
+          "http://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3",
+        id: "1553377779810459648",
+        tlink: "https://i.imgur.com/KJZsuBR.png",
+      },
+      position: { x: 10, y: 20 },
+    });
+    setVid(pvid);
+  }
   function addImage() {
     let pvid = [...vid];
     pvid[selectedScene].timeline.push({
@@ -148,25 +177,14 @@ const Editor: FunctionComponent<EditorProps> = () => {
       element: {
         type: "Image",
         id: uuidv4(),
-        ilink: "https://i.imgur.com/KJZsuBR.png",
+        ilink:
+          "https://c8.alamy.com/comp/DA9PEC/india-south-india-asia-karnataka-bangalore-city-downtown-skyline-business-DA9PEC.jpg",
       },
       position: { x: 10, y: 20 },
     });
     setVid(pvid);
   }
-  function addSound() {
-    let pvid = [...vid];
-    pvid[selectedScene].timeline.push({
-      eid: "SO-" + uuidv4(),
-      element: {
-        type: "Sound",
-        id: uuidv4(),
-        slink: "https://i.imgur.com/KJZsuBR.png",
-      },
-      position: { x: 10, y: 20 },
-    });
-    setVid(pvid);
-  }
+
   function addText(text: string) {
     let pvid = [...vid];
     pvid[selectedScene].timeline.push({
@@ -183,10 +201,15 @@ const Editor: FunctionComponent<EditorProps> = () => {
   return (
     <section className="bg-slate-900 text-white p-4 gap-4 min-h-screen h-full grid grid-cols-7 ">
       <div className="border col-span-2 grid place-items-center">
-        <canvas ref={canvasRef}></canvas>
+        <canvas className="border rounded-2xl" ref={canvasRef}></canvas>
       </div>
       <div className="border col-span-5 flex flex-col h-full">
-        <Toolbox addText={addText} addJustTweet={addJustTweet} />
+        <Toolbox
+          addText={addText}
+          addJustTweet={addJustTweet}
+          addImage={addImage}
+          addTTSTweet={addTTSTweet}
+        />
         <div
           className="border border-purple-500 p-4  grid grid-cols-5 gap-4  
         "
