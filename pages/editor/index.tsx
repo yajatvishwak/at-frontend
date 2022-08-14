@@ -34,6 +34,22 @@ const Editor: FunctionComponent<EditorProps> = () => {
           eid: uuidv4(),
           element: {
             id: "1553377779810459648",
+            type: "TTSTweet",
+            audiolink: "http://amphitweet.com/get/tts/1553377779810459648",
+            tlink: "https://i.imgur.com/hfp6yI4.png",
+          },
+          position: { x: 40, y: 50 },
+          scale: {
+            height: 100,
+            width: 400,
+          },
+          angle: 42,
+          zindex: 0,
+        },
+        {
+          eid: uuidv4(),
+          element: {
+            id: "1553377779810459648",
             type: "Tweet",
             tlink: "https://i.imgur.com/hfp6yI4.png",
           },
@@ -189,6 +205,17 @@ const Editor: FunctionComponent<EditorProps> = () => {
     return () => canvas.dispose();
   }, [canvasRef, vid, selectedScene]);
 
+  function deleteObject(id: string) {
+    const pvid = clone(vid);
+    const indexToDelete = pvid[selectedScene].timeline.findIndex(
+      (item) => item.eid === id
+    );
+    if (indexToDelete !== -1) {
+      pvid[selectedScene].timeline.splice(indexToDelete, 1);
+    }
+    setVid(pvid);
+  }
+
   function getZIndex() {
     return vid[selectedScene].timeline.length;
   }
@@ -275,8 +302,8 @@ const Editor: FunctionComponent<EditorProps> = () => {
       },
       position: { x: 10, y: 20 },
       scale: {
-        height: 100,
-        width: 20,
+        height: 300,
+        width: 300,
       },
       angle: 0,
       zindex: getZIndex(),
@@ -296,8 +323,8 @@ const Editor: FunctionComponent<EditorProps> = () => {
       },
       position: { x: 10, y: 20 },
       scale: {
-        height: 100,
-        width: 20,
+        height: 300,
+        width: 300,
       },
       angle: 0,
       zindex: getZIndex(),
@@ -316,8 +343,8 @@ const Editor: FunctionComponent<EditorProps> = () => {
       },
       position: { x: 10, y: 20 },
       scale: {
-        height: 100,
-        width: 20,
+        height: 300,
+        width: 300,
       },
       angle: 0,
       zindex: getZIndex(),
@@ -433,7 +460,11 @@ const Editor: FunctionComponent<EditorProps> = () => {
               removeScene={removeScene}
               addScene={addScene}
             />
-            <SceneControl selectedScene={selectedScene} vid={vid} />
+            <SceneControl
+              deleteObject={deleteObject}
+              selectedScene={selectedScene}
+              vid={vid}
+            />
             <SceneProperties
               setBgVid={(bg: string) => {
                 setbgVid(bg);
