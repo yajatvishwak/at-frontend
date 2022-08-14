@@ -31,6 +31,17 @@ const Editor: FunctionComponent<EditorProps> = () => {
         {
           eid: uuidv4(),
           element: {
+            id: "1553377779810459648",
+            type: "TTSTweet",
+            tlink: "https://i.imgur.com/hfp6yI4.png",
+            audiolink:
+              "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+          },
+          position: { x: 40, y: 50 },
+        },
+        {
+          eid: uuidv4(),
+          element: {
             id: uuidv4(),
             type: "Text",
             content: "adsfsrg",
@@ -161,7 +172,7 @@ const Editor: FunctionComponent<EditorProps> = () => {
       eid: "JT-" + uuidv4(),
       element: {
         type: "TTSTweet",
-        audioLink:
+        audiolink:
           "http://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3",
         id: "1553377779810459648",
         tlink: "https://i.imgur.com/KJZsuBR.png",

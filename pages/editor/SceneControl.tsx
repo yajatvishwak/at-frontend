@@ -36,6 +36,7 @@ const SceneControl: FunctionComponent<SceneControlProps> = ({
         src={playingURL}
         className="hidden"
         controls
+        //@ts-ignore
         ref={audioRef}
       ></audio>
       <div className=" col-span-3 rounded-2xl bg-slate-800 p-4">
@@ -148,7 +149,8 @@ const SceneControl: FunctionComponent<SceneControlProps> = ({
                       {!playing && (
                         <div
                           onClick={() => {
-                            play(scene.element.audioLink);
+                            //@ts-ignore
+                            play(scene.element.audiolink);
                           }}
                           className="cursor-pointer absolute top-1 right-1"
                         >
