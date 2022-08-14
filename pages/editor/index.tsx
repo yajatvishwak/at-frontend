@@ -190,7 +190,7 @@ const Editor: FunctionComponent<EditorProps> = () => {
   }, [canvasRef, vid, selectedScene]);
 
   function getZIndex() {
-    return vid[selectedScene].timeline.length - 1;
+    return vid[selectedScene].timeline.length;
   }
   function custombringForward(zLevel: number) {
     console.log("passed:", zLevel);
@@ -346,7 +346,7 @@ const Editor: FunctionComponent<EditorProps> = () => {
   }
   return (
     <>
-      <ReactTooltip className="text-white" />
+      <ReactTooltip />
       <section className="bg-slate-900 text-white p-4 gap-4 min-h-screen h-full grid grid-cols-7 ">
         <div className="border col-span-2 grid place-items-center">
           <canvas className="border rounded-2xl" ref={canvasRef}></canvas>
