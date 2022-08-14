@@ -14,7 +14,7 @@ const Toolbox: FunctionComponent<ToolboxProps> = ({
   addTTSTweet,
 }) => {
   return (
-    <div className="p-4 mt-auto">
+    <div className="p-4">
       <div>Elements</div>
       <div className="grid grid-cols-3 gap-4 my-4 ">
         <div

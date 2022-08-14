@@ -29,69 +29,7 @@ const Editor: FunctionComponent<EditorProps> = () => {
     {
       sceneid: "1",
       duration: 60,
-      timeline: [
-        {
-          eid: uuidv4(),
-          element: {
-            id: "1553377779810459648",
-            type: "TTSTweet",
-            audiolink: "http://amphitweet.com/get/tts/1553377779810459648",
-            tlink: "https://i.imgur.com/hfp6yI4.png",
-          },
-          position: { x: 40, y: 50 },
-          scale: {
-            height: 100,
-            width: 400,
-          },
-          angle: 42,
-          zindex: 0,
-        },
-        {
-          eid: uuidv4(),
-          element: {
-            id: "1553377779810459648",
-            type: "Tweet",
-            tlink: "https://i.imgur.com/hfp6yI4.png",
-          },
-          position: { x: 40, y: 50 },
-          scale: {
-            height: 100,
-            width: 400,
-          },
-          angle: 42,
-          zindex: 0,
-        },
-        {
-          eid: uuidv4(),
-          element: {
-            id: "1553377779810459648",
-            type: "Text",
-            content: "asfg",
-          },
-          position: { x: 40, y: 50 },
-          scale: {
-            height: 100,
-            width: 400,
-          },
-          angle: 0,
-          zindex: 1,
-        },
-        {
-          eid: uuidv4(),
-          element: {
-            id: "1553377779810459648",
-            type: "Text",
-            content: "hset",
-          },
-          position: { x: 40, y: 50 },
-          scale: {
-            height: 100,
-            width: 400,
-          },
-          angle: 0,
-          zindex: 2,
-        },
-      ],
+      timeline: [],
     },
   ]);
   useEffect(() => {
@@ -373,86 +311,94 @@ const Editor: FunctionComponent<EditorProps> = () => {
   }
   return (
     <>
-      <ReactTooltip />
+      <ReactTooltip className="text-white" />
       <section className="bg-slate-900 text-white p-4 gap-4 min-h-screen h-full grid grid-cols-7 ">
-        <div className="border col-span-2 grid place-items-center">
-          <canvas className="border rounded-2xl" ref={canvasRef}></canvas>
-          <div className="flex">
-            <div
-              data-tip="Bring Forward"
-              className="cursor-pointer"
-              onClick={() => {
-                if (canvas?.getActiveObject()) {
-                  let z = vid[selectedScene].timeline.find(
-                    //@ts-ignore
-                    (item) => item.eid === canvas?.getActiveObject().id
-                  )?.zindex;
-                  console.log("this do be z", z);
-                  if (z !== undefined) custombringForward(z);
-                } else {
-                  alert("select element to bring front");
-                }
-              }}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M5 10l7-7m0 0l7 7m-7-7v18"
-                />
-              </svg>
+        <div className="col-span-2 grid place-items-center">
+          <div>
+            <div className="flex items-center gap-3  py-7  ">
+              <img src="logo.svg" alt="" />
+              <div>
+                <div className="-mb-2  italic text-right">Editor</div>
+                <div className="text-3xl font-black">AmphiTweet</div>
+              </div>
             </div>
-            <div
-              data-tip="Send Back"
-              className="cursor-pointer"
-              onClick={() => {
-                if (canvas?.getActiveObject()) {
-                  let z = vid[selectedScene].timeline.find(
-                    //@ts-ignore
-                    (item) => item.eid === canvas?.getActiveObject().id
-                  )?.zindex;
-                  console.log("this do be z", z);
-                  if (z !== undefined) customsendBack(z);
-                } else {
-                  alert("select element to send back");
-                }
-              }}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M19 14l-7 7m0 0l-7-7m7 7V3"
-                />
-              </svg>
+            <div className="flex flex-col gap-2">
+              <canvas className="border rounded-2xl" ref={canvasRef}></canvas>
+              <div className="flex gap-4 border p-3 rounded-xl ">
+                <div
+                  data-tip="Bring Forward"
+                  className="cursor-pointer"
+                  onClick={() => {
+                    if (canvas?.getActiveObject()) {
+                      let z = vid[selectedScene].timeline.find(
+                        //@ts-ignore
+                        (item) => item.eid === canvas?.getActiveObject().id
+                      )?.zindex;
+                      console.log("this do be z", z);
+                      if (z !== undefined) custombringForward(z);
+                    } else {
+                      alert("select element to bring front");
+                    }
+                  }}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M5 10l7-7m0 0l7 7m-7-7v18"
+                    />
+                  </svg>
+                </div>
+                <div
+                  data-tip="Send Back"
+                  className="cursor-pointer"
+                  onClick={() => {
+                    if (canvas?.getActiveObject()) {
+                      let z = vid[selectedScene].timeline.find(
+                        //@ts-ignore
+                        (item) => item.eid === canvas?.getActiveObject().id
+                      )?.zindex;
+                      console.log("this do be z", z);
+                      if (z !== undefined) customsendBack(z);
+                    } else {
+                      alert("select element to send back");
+                    }
+                  }}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M19 14l-7 7m0 0l-7-7m7 7V3"
+                    />
+                  </svg>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        <div className="border col-span-5 flex flex-col h-full">
+        <div className="pt-7 col-span-5 flex flex-col h-full">
           <Toolbox
             addText={addText}
             addJustTweet={addJustTweet}
             addImage={addImage}
             addTTSTweet={addTTSTweet}
           />
-          <div
-            className="border border-purple-500 p-4  grid grid-cols-5 gap-4  
-        "
-          >
+          <div className=" border-purple-500 p-4  grid grid-cols-5 gap-4 mt-auto ">
             <SceneList
               vid={vid}
               selectedScene={selectedScene}
