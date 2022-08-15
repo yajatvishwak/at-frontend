@@ -312,7 +312,7 @@ const Editor: FunctionComponent<EditorProps> = () => {
   return (
     <>
       <ReactTooltip className="text-white" />
-      <section className="bg-slate-900 text-white p-4 gap-4 min-h-screen h-full grid grid-cols-7 ">
+      <section className="bg-slate-900 text-white p-4 gap-4 min-h-screen h-full grid grid-cols-7 font-dm">
         <div className="col-span-2 grid place-items-center">
           <div>
             <div className="flex items-center gap-3  py-7  ">
@@ -324,7 +324,7 @@ const Editor: FunctionComponent<EditorProps> = () => {
             </div>
             <div className="flex flex-col gap-2">
               <canvas className="border rounded-2xl" ref={canvasRef}></canvas>
-              <div className="flex gap-4 border p-3 rounded-xl ">
+              <div className="flex gap-4 bg-slate-800 p-3 rounded-xl ">
                 <div
                   data-tip="Bring Forward"
                   className="cursor-pointer"

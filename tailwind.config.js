@@ -7,9 +7,9 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        inter: ["Inter"],
+        dm: ["DM Sans"],
       },
     },
   },
-  plugins: [],
+  plugins: [require("daisyui")],
 };
