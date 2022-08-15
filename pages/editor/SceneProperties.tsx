@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, useState } from "react";
 
 interface ScenePropertiesProps {
   bgVid: string;
@@ -21,6 +21,7 @@ const SceneProperties: FunctionComponent<ScenePropertiesProps> = ({
   setbgAudioLevel,
   bgAudioLevel,
 }) => {
+  const [audiolink, setaudiolink] = useState<string>("");
   return (
     <div className=" flex flex-col rounded-2xl bg-slate-800 p-4">
       <div className="font-bold opacity-50">General Settings</div>
@@ -74,16 +75,26 @@ const SceneProperties: FunctionComponent<ScenePropertiesProps> = ({
         >
           Background Music (plays at 10%)
         </label>
-        <input
-          type="text"
-          id="first_name"
-          className="w-full px-3 py-2 rounded-full bg-transparent border focus:outline-blue-500"
-          placeholder="Audio link"
-          value={bgAudio}
-          onChange={(e) => {
-            setBgAudio(e.target.value);
-          }}
-        />
+        <div className="flex items-center gap-2">
+          <input
+            type="text"
+            id="first_name"
+            className="w-full px-3 py-2 rounded-full bg-transparent border focus:outline-blue-500"
+            placeholder="Audio link"
+            value={audiolink}
+            onChange={(e) => {
+              setaudiolink(e.target.value);
+            }}
+          />
+          <div
+            onClick={() => {
+              setBgAudio(audiolink);
+            }}
+            className="hover:scale-90 cursor-pointer transition-all"
+          >
+            💾
+          </div>
+        </div>
         <div className="flex gap-2 mt-3">
           <svg
             xmlns="http://www.w3.org/2000/svg"

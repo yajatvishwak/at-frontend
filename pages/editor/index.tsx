@@ -8,6 +8,8 @@ import SceneList from "./SceneList";
 import SceneControl from "./SceneControl";
 import SceneProperties from "./SceneProperties";
 import clone from "just-clone";
+import { Player } from "@remotion/player";
+import Composition from "../remotion/Composition";
 interface EditorProps {}
 
 const Editor: FunctionComponent<EditorProps> = () => {
@@ -32,10 +34,6 @@ const Editor: FunctionComponent<EditorProps> = () => {
       timeline: [],
     },
   ]);
-  useEffect(() => {
-    vidMetaData.current = { bgAudio, bgVid, bgAudioLevel, bgVidAudioLevel };
-  }, [bgAudio, bgVid, bgAudioLevel, bgVidAudioLevel]);
-  //www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3
 
   useEffect(() => {
     if (!canvas) {
@@ -140,6 +138,8 @@ const Editor: FunctionComponent<EditorProps> = () => {
     });
 
     setCanvas(canvas);
+    console.log(vid);
+
     return () => canvas.dispose();
   }, [canvasRef, vid, selectedScene]);
 
@@ -311,6 +311,29 @@ const Editor: FunctionComponent<EditorProps> = () => {
   }
   return (
     <>
+      <input type="checkbox" id="my-modal" className="modal-toggle" />
+      <div className="modal">
+        <div className="modal-box">
+          <Player
+            component={() => (
+              <Composition
+                vid={vid}
+                vidMetaData={{
+                  bgAudio: bgAudio || "",
+                  bgAudioLevel: bgAudioLevel || 0.1,
+                  bgVid: bgVid,
+                  bgVidAudioLevel: bgVidAudioLevel || 0.1,
+                }}
+              />
+            )}
+            durationInFrames={200}
+            compositionWidth={404}
+            compositionHeight={720}
+            fps={30}
+            controls
+          />
+        </div>
+      </div>
       <ReactTooltip className="text-white" />
       <section className="bg-slate-900 text-white p-4 gap-4 min-h-screen h-full grid grid-cols-7 font-dm">
         <div className="col-span-2 grid place-items-center">
@@ -323,6 +346,10 @@ const Editor: FunctionComponent<EditorProps> = () => {
               </div>
             </div>
             <div className="flex flex-col gap-2">
+              <label htmlFor="my-modal" className="btn modal-button">
+                Preview
+              </label>
+
               <canvas className="border rounded-2xl" ref={canvasRef}></canvas>
               <div className="flex gap-4 bg-slate-800 p-3 rounded-xl ">
                 <div

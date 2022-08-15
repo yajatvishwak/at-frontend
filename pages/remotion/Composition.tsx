@@ -1,67 +1,47 @@
 import { FunctionComponent, useEffect, useState } from "react";
-import { Sequence, Series } from "remotion";
+import { Audio, Sequence, Series } from "remotion";
 import { Scene } from "../_types/Scene";
 import Dannyboi from "./Dannyboi";
 
-interface CompositionProps {}
+interface CompositionProps {
+  vid?: Scene[];
+  vidMetaData: {
+    bgVid: string;
+    bgAudio: string;
+    bgVidAudioLevel: number;
+    bgAudioLevel: number;
+  };
+}
 
-const Composition: FunctionComponent<CompositionProps> = () => {
-  const [vid, setVid] = useState<Scene[]>([
-    {
-      sceneid: "1",
-      duration: 60,
-      timeline: [
-        {
-          eid: "e1",
-          element: {
-            id: "1553377779810459648",
-            type: "Tweet",
-            tlink: "https://i.imgur.com/hfp6yI4.png",
-          },
-          position: { x: 40, y: 50 },
-        },
-        {
-          eid: "e1",
-          element: {
-            id: "1553377779810459648",
-            type: "Tweet",
-            tlink: "https://i.imgur.com/hfp6yI4.png",
-          },
-          position: { x: 600, y: 150 },
-        },
-      ],
-    },
-    {
-      sceneid: "11",
-      duration: 60,
-      timeline: [
-        {
-          eid: "e1",
-          element: {
-            id: "1553377779810459648",
-            type: "Tweet",
-            tlink: "https://i.imgur.com/KJZsuBR.png",
-          },
-          position: { x: 69, y: 105 },
-        },
-      ],
-    },
-  ]);
-
+const Composition: FunctionComponent<CompositionProps> = ({
+  vid,
+  vidMetaData,
+}) => {
   return (
     <div>
       <Series>
-        {vid.map((scene: Scene) => {
+        {vid?.map((scene: Scene) => {
           return (
             <Series.Sequence
               durationInFrames={scene.duration}
               key={scene.sceneid}
             >
               <Dannyboi timeline={scene.timeline} />
+              {scene.timeline.map((ele) => {
+                if (ele.element.type === "TTSTweet") {
+                  return <Audio src="http://localhost:3001/1.mp3"></Audio>;
+                }
+              })}
             </Series.Sequence>
           );
         })}
       </Series>
+      {vidMetaData.bgAudio && (
+        <Audio
+          src={vidMetaData.bgAudio}
+          volume={vidMetaData.bgAudioLevel}
+        ></Audio>
+      )}
     </div>
   );
 };
