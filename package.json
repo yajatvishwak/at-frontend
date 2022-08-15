@@ -25,6 +25,7 @@
     "react-contextmenu": "^2.14.0",
     "react-dom": "18.2.0",
     "react-player": "^2.10.1",
+    "react-toastify": "^9.0.8",
     "react-tooltip": "^4.2.21",
     "remotion": "^3.2.1",
     "use-sound": "^4.0.1",

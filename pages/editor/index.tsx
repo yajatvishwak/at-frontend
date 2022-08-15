@@ -13,12 +13,6 @@ import Composition from "../remotion/Composition";
 interface EditorProps {}
 
 const Editor: FunctionComponent<EditorProps> = () => {
-  const vidMetaData = useRef<{
-    bgVid: string;
-    bgAudio: string;
-    bgVidAudioLevel: number;
-    bgAudioLevel: number;
-  }>();
   const [selectedScene, setSelectedScene] = useState<number>(0);
   const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
   const [bgVid, setbgVid] = useState<string>("");
@@ -34,7 +28,9 @@ const Editor: FunctionComponent<EditorProps> = () => {
       timeline: [],
     },
   ]);
-
+  useEffect(() => {
+    console.log(bgVidAudioLevel, bgVid);
+  }, [bgAudio, bgAudioLevel, bgVid, bgVidAudioLevel]);
   useEffect(() => {
     if (!canvas) {
       return;
@@ -313,14 +309,20 @@ const Editor: FunctionComponent<EditorProps> = () => {
     <>
       <input type="checkbox" id="my-modal" className="modal-toggle" />
       <div className="modal">
-        <div className="modal-box">
+        <div className="modal-box relative">
+          <label
+            htmlFor="my-modal"
+            className="btn btn-sm btn-circle absolute right-2 top-2"
+          >
+            ✕
+          </label>
           <Player
             component={() => (
               <Composition
                 vid={vid}
                 vidMetaData={{
                   bgAudio: bgAudio || "",
-                  bgAudioLevel: bgAudioLevel || 0.1,
+                  bgAudioLevel: bgAudioLevel || 0.0,
                   bgVid: bgVid,
                   bgVidAudioLevel: bgVidAudioLevel || 0.1,
                 }}

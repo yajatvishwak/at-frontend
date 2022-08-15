@@ -1,5 +1,5 @@
 import { FunctionComponent, useEffect, useState } from "react";
-import { Audio, Sequence, Series } from "remotion";
+import { Audio, Sequence, Series, Video } from "remotion";
 import { Scene } from "../_types/Scene";
 import Dannyboi from "./Dannyboi";
 
@@ -19,6 +19,19 @@ const Composition: FunctionComponent<CompositionProps> = ({
 }) => {
   return (
     <div>
+      {vidMetaData.bgVid && (
+        <Video
+          src={vidMetaData.bgVid}
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            height: "100%",
+            objectFit: "cover",
+            zIndex: -100,
+          }}
+        />
+      )}
       <Series>
         {vid?.map((scene: Scene) => {
           return (

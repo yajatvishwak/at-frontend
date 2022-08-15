@@ -6,10 +6,11 @@ interface VideoProps {}
 
 const Video: FunctionComponent<VideoProps> = () => {
   const { vid } = getInputProps();
+  const { vidMetaData } = getInputProps();
   return (
     <>
       <Composition
-        component={() => <MyComp vid={vid} />}
+        component={() => <MyComp vid={vid} vidMetaData={vidMetaData} />}
         durationInFrames={300}
         width={404}
         height={720}

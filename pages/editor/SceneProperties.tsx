@@ -22,6 +22,10 @@ const SceneProperties: FunctionComponent<ScenePropertiesProps> = ({
   bgAudioLevel,
 }) => {
   const [audiolink, setaudiolink] = useState<string>("");
+  const [audiolevel, setaudiolevel] = useState<number>(50);
+  const [vidlink, setvidlink] = useState<string>("");
+  const [vidlevel, setvidlevel] = useState<number>(40);
+
   return (
     <div className=" flex flex-col rounded-2xl bg-slate-800 p-4">
       <div className="font-bold opacity-50">General Settings</div>
@@ -32,16 +36,27 @@ const SceneProperties: FunctionComponent<ScenePropertiesProps> = ({
         >
           Background video
         </label>
-        <input
-          type="text"
-          id="bg-vid"
-          className="w-full px-3 py-2 rounded-full bg-transparent border focus:outline-blue-500"
-          placeholder="Vid link"
-          value={bgVid}
-          onChange={(e) => {
-            setBgVid(e.target.value);
-          }}
-        />
+        <div className="flex gap-3 items-center">
+          <input
+            type="text"
+            id="bg-vid"
+            className="w-full px-3 py-2 rounded-full bg-transparent border focus:outline-blue-500"
+            placeholder="Vid link"
+            value={vidlink}
+            onChange={(e) => {
+              setvidlink(e.target.value);
+            }}
+          />
+          <div
+            onClick={() => {
+              setBgVid(vidlink);
+              setbgVidAudioLevel(parseFloat((vidlevel / 100).toFixed(2)));
+            }}
+            className="hover:scale-90 cursor-pointer transition-all"
+          >
+            💾
+          </div>
+        </div>
         <div className="flex gap-2 mt-3">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -59,9 +74,9 @@ const SceneProperties: FunctionComponent<ScenePropertiesProps> = ({
           </svg>
           <input
             type="range"
-            value={bgVidAudioLevel}
+            value={vidlevel}
             onChange={(e) => {
-              setbgVidAudioLevel(parseInt(e.target.value));
+              setvidlevel(parseInt(e.target.value));
             }}
             className="w-full"
             id=""
@@ -89,6 +104,7 @@ const SceneProperties: FunctionComponent<ScenePropertiesProps> = ({
           <div
             onClick={() => {
               setBgAudio(audiolink);
+              setbgAudioLevel(parseFloat((audiolevel / 100).toFixed(2)));
             }}
             className="hover:scale-90 cursor-pointer transition-all"
           >
@@ -111,9 +127,9 @@ const SceneProperties: FunctionComponent<ScenePropertiesProps> = ({
             />
           </svg>
           <input
-            value={bgAudioLevel}
+            value={audiolevel}
             onChange={(e) => {
-              setbgAudioLevel(parseInt(e.target.value));
+              setaudiolevel(parseInt(e.target.value));
             }}
             type="range"
             className="w-full"
