@@ -10,6 +10,10 @@ import SceneProperties from "./SceneProperties";
 import clone from "just-clone";
 import { Player } from "@remotion/player";
 import Composition from "../remotion/Composition";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
+import Link from "next/link";
 interface EditorProps {}
 
 const Editor: FunctionComponent<EditorProps> = () => {
@@ -19,17 +23,18 @@ const Editor: FunctionComponent<EditorProps> = () => {
   const [bgAudio, setbgAudio] = useState<string>("");
   const [bgVidAudioLevel, setbgVidAudioLevel] = useState<number>(50);
   const [bgAudioLevel, setbgAudioLevel] = useState<number>(50);
+  const [isRendering, setisRendering] = useState<boolean>(false);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [vid, setVid] = useState<Scene[]>([
     {
       sceneid: "1",
-      duration: 60,
+      duration: 120,
       timeline: [],
     },
   ]);
   useEffect(() => {
-    console.log(bgVidAudioLevel, bgVid);
+    console.log({ bgVidAudioLevel, bgVid, bgAudio, bgAudioLevel });
   }, [bgAudio, bgAudioLevel, bgVid, bgVidAudioLevel]);
   useEffect(() => {
     if (!canvas) {
@@ -134,6 +139,7 @@ const Editor: FunctionComponent<EditorProps> = () => {
     });
 
     setCanvas(canvas);
+
     console.log(vid);
 
     return () => canvas.dispose();
@@ -213,7 +219,7 @@ const Editor: FunctionComponent<EditorProps> = () => {
 
   function addScene() {
     let tvid = clone(vid);
-    tvid = [...tvid, { sceneid: uuidv4(), duration: 0, timeline: [] }];
+    tvid = [...tvid, { sceneid: uuidv4(), duration: 30, timeline: [] }];
     setVid(tvid);
   }
   function removeScene(sceneid: string) {
@@ -227,43 +233,63 @@ const Editor: FunctionComponent<EditorProps> = () => {
 
   function addJustTweet() {
     let pvid = [...vid];
-    pvid[selectedScene].timeline.push({
-      eid: "JT-" + uuidv4(),
-      element: {
-        type: "Tweet",
-        id: "1553377779810459648",
-        tlink: "https://i.imgur.com/KJZsuBR.png",
-      },
-      position: { x: 10, y: 20 },
-      scale: {
-        height: 300,
-        width: 300,
-      },
-      angle: 0,
-      zindex: getZIndex(),
-    });
-    setVid(pvid);
+    let tid = prompt("TweetID");
+    if (tid) {
+      pvid[selectedScene].timeline.push({
+        eid: "JT-" + uuidv4(),
+        element: {
+          type: "Tweet",
+          id: tid,
+          tlink: process.env.NEXT_PUBLIC_URL + "tweet/" + tid + ".png",
+        },
+        position: { x: 10, y: 20 },
+        scale: {
+          height: 300,
+          width: 300,
+        },
+        angle: 0,
+        zindex: getZIndex(),
+      });
+      setVid(pvid);
+    } else {
+      toast("No Tweet ID Given");
+    }
   }
-  function addTTSTweet() {
+  async function addTTSTweet() {
     let pvid = [...vid];
-    pvid[selectedScene].timeline.push({
-      eid: "JT-" + uuidv4(),
-      element: {
-        type: "TTSTweet",
-        audiolink:
-          "http://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3",
-        id: "1553377779810459648",
-        tlink: "https://i.imgur.com/KJZsuBR.png",
-      },
-      position: { x: 10, y: 20 },
-      scale: {
-        height: 300,
-        width: 300,
-      },
-      angle: 0,
-      zindex: getZIndex(),
-    });
-    setVid(pvid);
+    let tid = prompt("Tweet ID");
+    let voice = prompt("male1,female1,male2,female2");
+    if (
+      tid &&
+      voice &&
+      ["male1", "female1", "male2", "female2"].includes(voice)
+    ) {
+      pvid[selectedScene].timeline.push({
+        eid: uuidv4(),
+        element: {
+          type: "TTSTweet",
+          audiolink: process.env.NEXT_PUBLIC_URL + "audio/" + tid + ".mp3",
+          id: tid,
+          tlink: process.env.NEXT_PUBLIC_URL + "tweet/" + tid + ".png",
+        },
+        position: { x: 10, y: 20 },
+        scale: {
+          height: 300,
+          width: 300,
+        },
+        angle: 0,
+        zindex: getZIndex(),
+      });
+
+      toast("Generating TTS...");
+      await axios.get(
+        process.env.NEXT_PUBLIC_URL + "audio/" + tid + ".mp3" + "/" + voice
+      );
+      toast("TTS Generated Successfully");
+      setVid(pvid);
+    } else {
+      toast("Incorrect inputs");
+    }
   }
   function addImage() {
     let pvid = [...vid];
@@ -305,37 +331,44 @@ const Editor: FunctionComponent<EditorProps> = () => {
     });
     setVid(pvid);
   }
+
+  async function rendervideo() {
+    const caption = prompt("What's the caption?");
+
+    if (caption) {
+      const totalduration = vid.reduce((acc, cv) => acc + cv.duration, 0);
+      const vidMetaData = {
+        bgAudio,
+        bgAudioLevel,
+        bgVid,
+        bgVidAudioLevel,
+        totalduration,
+      };
+      toast(
+        "This can take up to 10 mins. Check your profile page to see the final video"
+      );
+      setisRendering(true);
+      const { data } = await axios.post("/api/rendervideo", {
+        vid,
+        vidMetaData,
+        caption,
+      });
+      console.log(data);
+      setisRendering(false);
+      if (data && data.status === "done") {
+        toast("Video rendered, Check your profile");
+        window.location.href = "/app/profile";
+      }
+    } else {
+      toast("A caption is needed to publish video to amphitweet");
+    }
+    //vidLink to users profile
+  }
+
   return (
     <>
-      <input type="checkbox" id="my-modal" className="modal-toggle" />
-      <div className="modal">
-        <div className="modal-box relative">
-          <label
-            htmlFor="my-modal"
-            className="btn btn-sm btn-circle absolute right-2 top-2"
-          >
-            ✕
-          </label>
-          <Player
-            component={() => (
-              <Composition
-                vid={vid}
-                vidMetaData={{
-                  bgAudio: bgAudio || "",
-                  bgAudioLevel: bgAudioLevel || 0.0,
-                  bgVid: bgVid,
-                  bgVidAudioLevel: bgVidAudioLevel || 0.1,
-                }}
-              />
-            )}
-            durationInFrames={200}
-            compositionWidth={404}
-            compositionHeight={720}
-            fps={30}
-            controls
-          />
-        </div>
-      </div>
+      <ToastContainer />
+
       <ReactTooltip className="text-white" />
       <section className="bg-slate-900 text-white p-4 gap-4 min-h-screen h-full grid grid-cols-7 font-dm">
         <div className="col-span-2 grid place-items-center">
@@ -348,27 +381,75 @@ const Editor: FunctionComponent<EditorProps> = () => {
               </div>
             </div>
             <div className="flex flex-col gap-2">
-              <label htmlFor="my-modal" className="btn modal-button">
-                Preview
-              </label>
-
               <canvas className="border rounded-2xl" ref={canvasRef}></canvas>
-              <div className="flex gap-4 bg-slate-800 p-3 rounded-xl ">
+              <div className="flex gap-4 bg-slate-800 p-3  rounded-xl ">
+                <div className=" flex gap-3">
+                  <div
+                    data-tip="Bring Forward"
+                    className="cursor-pointer"
+                    onClick={() => {
+                      if (canvas?.getActiveObject()) {
+                        let z = vid[selectedScene].timeline.find(
+                          //@ts-ignore
+                          (item) => item.eid === canvas?.getActiveObject().id
+                        )?.zindex;
+                        console.log("this do be z", z);
+                        if (z !== undefined) custombringForward(z);
+                      } else {
+                        toast("Select element to bring front");
+                      }
+                    }}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 w-6"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M5 10l7-7m0 0l7 7m-7-7v18"
+                      />
+                    </svg>
+                  </div>
+                  <div
+                    data-tip="Send Back"
+                    className="cursor-pointer"
+                    onClick={() => {
+                      if (canvas?.getActiveObject()) {
+                        let z = vid[selectedScene].timeline.find(
+                          //@ts-ignore
+                          (item) => item.eid === canvas?.getActiveObject().id
+                        )?.zindex;
+                        console.log("this do be z", z);
+                        if (z !== undefined) customsendBack(z);
+                      } else {
+                        toast("Select element to send back");
+                      }
+                    }}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 w-6"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M19 14l-7 7m0 0l-7-7m7 7V3"
+                      />
+                    </svg>
+                  </div>
+                </div>
                 <div
-                  data-tip="Bring Forward"
-                  className="cursor-pointer"
-                  onClick={() => {
-                    if (canvas?.getActiveObject()) {
-                      let z = vid[selectedScene].timeline.find(
-                        //@ts-ignore
-                        (item) => item.eid === canvas?.getActiveObject().id
-                      )?.zindex;
-                      console.log("this do be z", z);
-                      if (z !== undefined) custombringForward(z);
-                    } else {
-                      alert("select element to bring front");
-                    }
-                  }}
+                  data-tip="Preview Final Video"
+                  className="cursor-pointer ml-auto "
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -381,41 +462,42 @@ const Editor: FunctionComponent<EditorProps> = () => {
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      d="M5 10l7-7m0 0l7 7m-7-7v18"
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
                     />
-                  </svg>
-                </div>
-                <div
-                  data-tip="Send Back"
-                  className="cursor-pointer"
-                  onClick={() => {
-                    if (canvas?.getActiveObject()) {
-                      let z = vid[selectedScene].timeline.find(
-                        //@ts-ignore
-                        (item) => item.eid === canvas?.getActiveObject().id
-                      )?.zindex;
-                      console.log("this do be z", z);
-                      if (z !== undefined) customsendBack(z);
-                    } else {
-                      alert("select element to send back");
-                    }
-                  }}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      d="M19 14l-7 7m0 0l-7-7m7 7V3"
+                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
                     />
                   </svg>
                 </div>
+                {isRendering && (
+                  <div className=" flex justify-center items-center">
+                    <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
+                  </div>
+                )}
+                {!isRendering && (
+                  <div
+                    onClick={rendervideo}
+                    data-tip="Post to AmphiTweet"
+                    className="cursor-pointer"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 w-6"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M17 16v2a2 2 0 01-2 2H5a2 2 0 01-2-2v-7a2 2 0 012-2h2m3-4H9a2 2 0 00-2 2v7a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-1m-1 4l-3 3m0 0l-3-3m3 3V3"
+                      />
+                    </svg>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -438,6 +520,9 @@ const Editor: FunctionComponent<EditorProps> = () => {
             <SceneControl
               deleteObject={deleteObject}
               selectedScene={selectedScene}
+              setVid={(vid: Scene[]) => {
+                setVid(vid);
+              }}
               vid={vid}
             />
             <SceneProperties

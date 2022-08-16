@@ -1,4 +1,6 @@
 import { FunctionComponent, useState } from "react";
+import { toast } from "react-toastify";
+import { isWebUri } from "valid-url";
 
 interface ScenePropertiesProps {
   bgVid: string;
@@ -49,8 +51,13 @@ const SceneProperties: FunctionComponent<ScenePropertiesProps> = ({
           />
           <div
             onClick={() => {
-              setBgVid(vidlink);
-              setbgVidAudioLevel(parseFloat((vidlevel / 100).toFixed(2)));
+              if (isWebUri(vidlink)) {
+                toast("Saved!");
+                setBgVid(vidlink);
+                setbgVidAudioLevel(parseFloat((vidlevel / 100).toFixed(2)));
+              } else {
+                toast("Invalid URL");
+              }
             }}
             className="hover:scale-90 cursor-pointer transition-all"
           >
@@ -74,6 +81,7 @@ const SceneProperties: FunctionComponent<ScenePropertiesProps> = ({
           </svg>
           <input
             type="range"
+            step={0.01}
             value={vidlevel}
             onChange={(e) => {
               setvidlevel(parseInt(e.target.value));
@@ -103,8 +111,13 @@ const SceneProperties: FunctionComponent<ScenePropertiesProps> = ({
           />
           <div
             onClick={() => {
-              setBgAudio(audiolink);
-              setbgAudioLevel(parseFloat((audiolevel / 100).toFixed(2)));
+              if (isWebUri(audiolink)) {
+                toast("Saved!");
+                setBgAudio(audiolink);
+                setbgAudioLevel(parseFloat((audiolevel / 100).toFixed(2)));
+              } else {
+                toast("Invalid URL");
+              }
             }}
             className="hover:scale-90 cursor-pointer transition-all"
           >
@@ -133,6 +146,7 @@ const SceneProperties: FunctionComponent<ScenePropertiesProps> = ({
             }}
             type="range"
             className="w-full"
+            step={0.01}
             id=""
           />
         </div>

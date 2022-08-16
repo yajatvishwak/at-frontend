@@ -10,8 +10,20 @@ const Video: FunctionComponent<VideoProps> = () => {
   return (
     <>
       <Composition
-        component={() => <MyComp vid={vid} vidMetaData={vidMetaData} />}
-        durationInFrames={300}
+        component={() => (
+          <MyComp
+            vid={vid}
+            vidMetaData={
+              vidMetaData || {
+                bgVid: "",
+                bgAudio: "",
+                bgAudioLevel: 0,
+                bgVidAudioLevel: 0,
+              }
+            }
+          />
+        )}
+        durationInFrames={vidMetaData.totalduration}
         width={404}
         height={720}
         fps={30}

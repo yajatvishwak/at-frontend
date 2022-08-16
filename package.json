@@ -13,6 +13,8 @@
     "@remotion/cli": "^3.2.1",
     "@remotion/player": "^3.2.1",
     "@remotion/renderer": "^3.2.1",
+    "@supabase/supabase-js": "^1.35.6",
+    "axios": "^0.27.2",
     "daisyui": "^2.24.0",
     "fabric": "^5.2.1",
     "fabricjs-react": "^1.0.8",
@@ -29,7 +31,8 @@
     "react-tooltip": "^4.2.21",
     "remotion": "^3.2.1",
     "use-sound": "^4.0.1",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "valid-url": "^1.0.9"
   },
   "devDependencies": {
     "@types/fabric": "^4.5.11",
@@ -37,6 +40,7 @@
     "@types/react": "18.0.17",
     "@types/react-dom": "18.0.6",
     "@types/uuid": "^8.3.4",
+    "@types/valid-url": "^1.0.3",
     "autoprefixer": "^10.4.8",
     "eslint": "8.21.0",
     "eslint-config-next": "12.2.4",

@@ -1,4 +1,4 @@
-import { getInputProps, registerRoot } from "remotion";
+import { registerRoot } from "remotion";
 import Video from "./Video";
 
 // const vid = getInputProps()["vid"];

@@ -14,7 +14,7 @@ const Dannyboi: FunctionComponent<DannyboiProps> = ({ timeline }) => {
   const [handle] = useState(() => delayRender());
 
   useEffect(() => {
-    console.log("i=", i);
+    // console.log("i=", i);
     if (i === timeline.length) continueRender(handle);
   }, [i]);
 

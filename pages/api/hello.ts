@@ -26,65 +26,8 @@ const start = async () => {
     vid: [
       {
         sceneid: "1",
-        duration: 60,
-        timeline: [
-          {
-            eid: "IM-a84ba426-e0a2-4ee1-8db8-16ccc26af917",
-            element: {
-              type: "Image",
-              id: "1521ac0a-3bd2-4c56-8d2b-a5b9e8bb5403",
-              ilink:
-                "https://c8.alamy.com/comp/DA9PEC/india-south-india-asia-karnataka-bangalore-city-downtown-skyline-business-DA9PEC.jpg",
-            },
-            position: {
-              x: 277,
-              y: 37,
-            },
-            scale: {
-              height: 300,
-              width: 300,
-            },
-            angle: 0,
-            zindex: 0,
-          },
-          {
-            eid: "069ef5f2-331a-448c-bcb5-026e7209be81",
-            element: {
-              type: "Text",
-              id: "c409d8e1-e3d9-4090-bc18-46b2503cbb5e",
-              content: "sesfedh",
-            },
-            position: {
-              x: 312,
-              y: 104,
-            },
-            scale: {
-              height: 57.76880494952783,
-              width: 151.25040703353955,
-            },
-            angle: 0,
-            zindex: 1,
-          },
-          {
-            eid: "JT-9bb04e37-c90d-491a-b064-fde06be7304c",
-            element: {
-              type: "TTSTweet",
-              id: "1553377779810459648",
-              tlink: "https://i.imgur.com/KJZsuBR.png",
-              audioLink: "https://i.imgur.com/KJZsuBR.png",
-            },
-            position: {
-              x: 111,
-              y: 40,
-            },
-            scale: {
-              height: 97.34042553191489,
-              width: 300,
-            },
-            angle: 0,
-            zindex: 2,
-          },
-        ],
+        duration: 20,
+        timeline: [],
       },
     ],
   };
@@ -107,11 +50,13 @@ const start = async () => {
   Review "${entry}" for the correct ID.`);
   }
 
-  const outputLocation = path.resolve(`out/${compositionId}.mp4`);
+  const outputLocation = path.resolve(`out/${compositionId}2.mp4`);
 
   console.log("Attempting to render:", outputLocation);
   await renderMedia({
     composition,
+    parallelism: 1,
+    verbose: true,
     serveUrl: bundleLocation,
     codec: "h264",
     outputLocation,

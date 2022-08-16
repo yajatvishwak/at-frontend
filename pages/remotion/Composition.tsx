@@ -42,7 +42,7 @@ const Composition: FunctionComponent<CompositionProps> = ({
               <Dannyboi timeline={scene.timeline} />
               {scene.timeline.map((ele) => {
                 if (ele.element.type === "TTSTweet") {
-                  return <Audio src="http://localhost:3001/1.mp3"></Audio>;
+                  return <Audio src={ele.element.audiolink}></Audio>;
                 }
               })}
             </Series.Sequence>
