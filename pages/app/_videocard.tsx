@@ -1,23 +1,44 @@
 import { FunctionComponent } from "react";
+import { VideoDisplay } from "../_types/VideoDisplay";
 
 interface VideoCardProps {
   allowDelete: boolean;
+  data: VideoDisplay;
+  deleteVid?: (id: string) => void;
+  like: (id: string) => void;
 }
 
-const VideoCard: FunctionComponent<VideoCardProps> = ({ allowDelete }) => {
+const VideoCard: FunctionComponent<VideoCardProps> = ({
+  allowDelete,
+  data,
+  like,
+  deleteVid,
+}) => {
   return (
-    <div className="rounded-3xl flex-1  row-span-2 min-h-[50rem] bg-slate-900 relative font-dm">
-      <div className="flex absolute top-4 left-4 items-center w-full gap-3">
+    <div className="rounded-3xl  font-dm">
+      <div className="flex  p-3  items-center w-full gap-3 ">
         <div className="avatar">
           <div className="w-8 rounded-full">
-            <img src="https://placeimg.com/192/192/people" />
+            <img
+              src={data.authordpurl || "https://placeimg.com/192/192/people"}
+            />
           </div>
         </div>
-        <div className="font-bold drop-shadow-2xl">@yojatvishhwakk</div>
-        <div className="ml-auto mr-7 flex items-center gap-2">
-          <div className="font-bold drop-shadow-2xl">1.3k ❤️</div>
+        <div className="font-bold drop-shadow-2xl">@{data.authorname}</div>
+        <div className=" ml-auto flex items-center gap-2">
+          <div
+            onClick={() => like(data._id)}
+            data-tip="Like!!"
+            className="cursor-pointer hover:scale-90 transition-all font-bold drop-shadow-2xl"
+          >
+            {data.likes} ❤️
+          </div>
           {allowDelete && (
-            <div className="hover:text-red-500 drop-shadow-2xl transition-all ">
+            <div
+              //@ts-ignore
+              onClick={() => deleteVid(data._id)}
+              className="hover:text-red-500 drop-shadow-2xl transition-all "
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-6 w-6"
@@ -37,16 +58,17 @@ const VideoCard: FunctionComponent<VideoCardProps> = ({ allowDelete }) => {
         </div>
       </div>
       <video
-        className="object-cover h-full rounded-3xl"
+        className="object-cover w-full h-[50rem] rounded-3xl"
         controls
         loop
-        src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+        src={data.vidurl}
       ></video>
-
-      <div className="absolute rounded-b-3xl gap-2 bg-white  bg-opacity-20 backdrop-blur-lg  hover:bg-black hover:bg-opacity-50 transition-all bottom-0 w-full flex flex-col p-4">
-        <div>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. In
-          recusandae voluptatem distinctio
+      <div className="  gap-2  w-full flex flex-col p-4">
+        <div className="line-clamp-3">
+          {data.caption} Lorem ipsum, dolor sit amet consectetur adipisicing
+          elit. Molestias, explicabo! Sunt, aliquid voluptatibus reprehenderit
+          iure praesentium perferendis dolore, asperiores facere ullam
+          laudantium et deserunt veritatis eum odio quasi vero dolorem.
         </div>
       </div>
     </div>

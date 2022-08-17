@@ -38,6 +38,7 @@ const SignUp: FunctionComponent<SignUpProps> = () => {
             <label>Username</label>
             <input
               type="text"
+              // @ts-ignore
               onChange={(e) => setUsername(e.target.value)}
               placeholder="humble politician nograj"
               className="input input-bordered bg-slate-900"
@@ -48,6 +49,7 @@ const SignUp: FunctionComponent<SignUpProps> = () => {
             <input
               type="text"
               placeholder="safepassword"
+              // @ts-ignore
               onChange={(e) => setPassword(e.target.value)}
               className="input input-bordered bg-slate-900"
             />

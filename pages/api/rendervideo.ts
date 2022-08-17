@@ -64,7 +64,7 @@ const start = async (inputProps: {
   Review "${entry}" for the correct ID.`);
     }
 
-    const outputLocation = path.resolve(`out/${compositionId}.mp4`);
+    const outputLocation = path.resolve(`public/out/${compositionId}.mp4`);
 
     console.log("Attempting to render:", outputLocation);
     await renderMedia({
@@ -108,20 +108,11 @@ export default async function handler(
       //     })
       //   );
       //   console.log("FORMDATA: ", fd);
-      const formData = new FormData();
-      formData.append("file", path.resolve(`out/${req.body.id}.mp4`));
-      formData.append(
-        "data",
-        JSON.stringify({
-          userid: req.body.userid,
-          caption: req.body.caption,
-        })
-      );
-      const response = await fetch(
-        process.env.NEXT_PUBLIC_URL + "create_video",
-        { method: "POST", body: formData }
-      );
-      console.log(response);
+      await axios.post(process.env.NEXT_PUBLIC_URL + "create_video", {
+        userid: req.body.userid,
+        filename: req.body.id + ".mp4",
+        caption: req.body.caption,
+      });
       res.send({ status: "done" });
       //   console.log(data);
     } else {

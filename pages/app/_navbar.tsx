@@ -23,7 +23,12 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
         >
           Create
         </div>
-        <div className="avatar">
+        <div
+          onClick={() => {
+            window.location.href = "/app/profile";
+          }}
+          className="avatar"
+        >
           <div className="w-10 rounded-full ring ring-blue-500 ring-offset-base-100 ring-offset-2">
             <img src="https://placeimg.com/192/192/people" />
           </div>
