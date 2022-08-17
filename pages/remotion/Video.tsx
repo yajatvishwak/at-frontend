@@ -27,7 +27,7 @@ const Video: FunctionComponent<VideoProps> = () => {
         width={404}
         height={720}
         fps={30}
-        id="HelloWorld"
+        id={vidMetaData.id}
       />
     </>
   );

@@ -68,7 +68,7 @@ const SceneControl: FunctionComponent<SceneControlProps> = ({
                       key={scene.eid}
                       className="rounded-xl border px-2 py-1 object-cover max-w-[10em] cursor-pointer flex items-center  gap-2"
                     >
-                      <div>{scene.element.content}</div>
+                      <div className="truncate">{scene.element.content}</div>
                       <div
                         className="hover:text-red-500 transition-all"
                         onClick={() => deleteObject(scene.eid)}

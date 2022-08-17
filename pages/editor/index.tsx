@@ -8,12 +8,9 @@ import SceneList from "./SceneList";
 import SceneControl from "./SceneControl";
 import SceneProperties from "./SceneProperties";
 import clone from "just-clone";
-import { Player } from "@remotion/player";
-import Composition from "../remotion/Composition";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
-import Link from "next/link";
 interface EditorProps {}
 
 const Editor: FunctionComponent<EditorProps> = () => {
@@ -29,7 +26,7 @@ const Editor: FunctionComponent<EditorProps> = () => {
   const [vid, setVid] = useState<Scene[]>([
     {
       sceneid: "1",
-      duration: 120,
+      duration: 30,
       timeline: [],
     },
   ]);
@@ -334,7 +331,7 @@ const Editor: FunctionComponent<EditorProps> = () => {
 
   async function rendervideo() {
     const caption = prompt("What's the caption?");
-
+    const id = uuidv4();
     if (caption) {
       const totalduration = vid.reduce((acc, cv) => acc + cv.duration, 0);
       const vidMetaData = {
@@ -343,6 +340,7 @@ const Editor: FunctionComponent<EditorProps> = () => {
         bgVid,
         bgVidAudioLevel,
         totalduration,
+        id,
       };
       toast(
         "This can take up to 10 mins. Check your profile page to see the final video"
@@ -352,6 +350,8 @@ const Editor: FunctionComponent<EditorProps> = () => {
         vid,
         vidMetaData,
         caption,
+        id,
+        userid: localStorage.getItem("userid"),
       });
       console.log(data);
       setisRendering(false);

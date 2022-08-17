@@ -10,7 +10,6 @@ const Login: FunctionComponent<LoginProps> = () => {
         onClick={async () => {
           const { user, session, error } = await supabase.auth.signIn({
             provider: "twitter",
-            redirectTo: window.location.origin,
           });
           console.log(user, session, error);
         }}

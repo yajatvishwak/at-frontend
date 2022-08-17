@@ -4,27 +4,28 @@ import path from "path";
 import { bundle } from "@remotion/bundler";
 import { getCompositions, renderMedia } from "@remotion/renderer";
 import { Scene } from "../_types/Scene";
+import axios from "axios";
+// import FormData from "form-data";
+import fetch, { FormData, File, fileFrom } from "node-fetch";
 
 type Data = {
   status: string;
 };
 
-const start = async (
-  inputProps: {
-    vid: [Scene];
-    vidMetaData: {
-      bgAudio: string;
-      bgAudioLevel: number;
-      bgVid: string;
-      bgVidAudioLevel: number;
-      totalduration: number;
-    };
-  },
-  id: string
-) => {
+const start = async (inputProps: {
+  vid: [Scene];
+  vidMetaData: {
+    bgAudio: string;
+    bgAudioLevel: number;
+    bgVid: string;
+    bgVidAudioLevel: number;
+    totalduration: number;
+    id: string;
+  };
+}) => {
   // The composition you want to render
   try {
-    const compositionId = id;
+    const compositionId = inputProps.vidMetaData.id;
 
     // You only have to do this once, you can reuse the bundle.
     const entry = "pages/remotion/index";
@@ -45,7 +46,6 @@ const start = async (
     //       },
     //     ],
     //   };
-
     // Extract all the compositions you have defined in your project
     // from the webpack bundle.
     const comps = await getCompositions(bundleLocation, {
@@ -64,7 +64,7 @@ const start = async (
   Review "${entry}" for the correct ID.`);
     }
 
-    const outputLocation = path.resolve(`out/${compositionId}2.mp4`);
+    const outputLocation = path.resolve(`out/${compositionId}.mp4`);
 
     console.log("Attempting to render:", outputLocation);
     await renderMedia({
@@ -89,17 +89,41 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   if (req.method === "POST") {
-    if (
-      await start(
-        { vid: req.body.vid, vidMetaData: req.body.vidMetaData },
-        req.body.id
-      )
-    ) {
-      res.send({ status: "done" });
+    if (await start({ vid: req.body.vid, vidMetaData: req.body.vidMetaData })) {
       // send to main server
       // req.body.id.mp4 ==> "file"
       // req.body.caption ===> "caption"
       // req.body.userid ===> "userid"
+      //   let fd = new FormData();
+      //   console.log(
+      //     "THIS ONE LOOOK HEREEE  === ",
+      //     path.resolve("out/" + req.body.id + ".mp4")
+      //   );
+      //   //   fd.append("file", path.resolve(`out/${req.body.id}.mp4`));
+      //   fd.append(
+      //     "data",
+      //     JSON.stringify({
+      //       userid: req.body.userid,
+      //       caption: req.body.caption,
+      //     })
+      //   );
+      //   console.log("FORMDATA: ", fd);
+      const formData = new FormData();
+      formData.append("file", path.resolve(`out/${req.body.id}.mp4`));
+      formData.append(
+        "data",
+        JSON.stringify({
+          userid: req.body.userid,
+          caption: req.body.caption,
+        })
+      );
+      const response = await fetch(
+        process.env.NEXT_PUBLIC_URL + "create_video",
+        { method: "POST", body: formData }
+      );
+      console.log(response);
+      res.send({ status: "done" });
+      //   console.log(data);
     } else {
       res.send({ status: "notdone" });
     }

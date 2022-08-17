@@ -1,14 +1,9 @@
 import { FunctionComponent, useEffect } from "react";
-import { supabase } from "../src/createClient";
 import NavBar from "./_navbar";
 import VideoCard from "./_videocard";
 interface AppProps {}
 
 const App: FunctionComponent<AppProps> = () => {
-  useEffect(() => {
-    console.log(supabase.auth.session());
-    console.log(supabase.auth.user());
-  }, []);
   return (
     <section className="min-h-screen h-full bg-slate-800 flex flex-col text-white p-10 font-dm ">
       <NavBar />
