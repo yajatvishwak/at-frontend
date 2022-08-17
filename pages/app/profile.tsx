@@ -66,12 +66,16 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                       allowDelete={true}
                       data={vc}
                       deleteVid={(id: string) => {
-                        console.log("cakked");
-                        let d = clone(data);
-                        d = d.filter((item) => item._id !== id);
-                        console.log(d);
-                        setData(d);
-                        axios.get(process.env.NEXT_PUBLIC_URL + "delete/" + id);
+                        if (confirm("Are you sure?")) {
+                          console.log("cakked");
+                          let d = clone(data);
+                          d = d.filter((item) => item._id !== id);
+                          console.log(d);
+                          setData(d);
+                          axios.get(
+                            process.env.NEXT_PUBLIC_URL + "delete/" + id
+                          );
+                        }
                       }}
                       like={(id: string) => {
                         // let d = clone(data);

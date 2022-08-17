@@ -278,11 +278,16 @@ const Editor: FunctionComponent<EditorProps> = () => {
         zindex: getZIndex(),
       });
 
-      toast("Generating TTS...");
+      const tos = toast.loading("Generating TTS...");
       await axios.get(
         process.env.NEXT_PUBLIC_URL + "audio/" + tid + ".mp3" + "/" + voice
       );
-      toast("TTS Generated Successfully");
+      toast.update(tos, {
+        render: "TTS Generated Successfully",
+        type: "success",
+        isLoading: false,
+      });
+
       setVid(pvid);
     } else {
       toast("Incorrect inputs");
@@ -342,7 +347,7 @@ const Editor: FunctionComponent<EditorProps> = () => {
         totalduration,
         id,
       };
-      toast(
+      const tos = toast.loading(
         "This can take up to 10 mins. Check your profile page to see the final video"
       );
       setisRendering(true);
@@ -356,9 +361,19 @@ const Editor: FunctionComponent<EditorProps> = () => {
       console.log(data);
       setisRendering(false);
       if (data && data.status === "done") {
-        toast("Video rendered, Check your profile");
+        toast.update(tos, {
+          render: "Video Rendered, Redirecting...",
+          type: "success",
+          isLoading: false,
+        });
+
         window.location.href = "/app/profile";
       }
+      toast.update(tos, {
+        render: "Awwh snap, Something went wrong",
+        type: "error",
+        isLoading: false,
+      });
     } else {
       toast("A caption is needed to publish video to amphitweet");
     }
