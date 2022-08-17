@@ -15,7 +15,12 @@ const Toolbox: FunctionComponent<ToolboxProps> = ({
 }) => {
   return (
     <div className="p-4">
-      <div>Elements</div>
+      <div className="flex items-center justify-between">
+        <div>Elements</div>
+        <div className="border cursor-pointer rounded-full px-4 py-1">
+          How to use
+        </div>
+      </div>
       <div className="grid grid-cols-3 gap-4 my-4 ">
         <div
           onClick={() => {
