@@ -17,7 +17,13 @@ const Toolbox: FunctionComponent<ToolboxProps> = ({
     <div className="p-4">
       <div className="flex items-center justify-between">
         <div>Elements</div>
-        <div className="border cursor-pointer rounded-full px-4 py-1">
+        <div
+          onClick={() => {
+            window.location.href =
+              "https://github.com/yajatvishwak/at-frontend/blob/main/EDITOR-USAGE-GUIDE.md";
+          }}
+          className="border cursor-pointer rounded-full px-4 py-1"
+        >
           How to use
         </div>
       </div>

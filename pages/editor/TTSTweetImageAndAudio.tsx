@@ -4,16 +4,25 @@ import { Element } from "../_types/Element";
 interface TTSTweetImageAndAudioProps {
   scene: Element;
   deleteObject: (eid: string) => void;
+  setDuration: (val: number) => void;
 }
 
 const TTSTweetImageAndAudio: FunctionComponent<TTSTweetImageAndAudioProps> = ({
   scene,
   deleteObject,
+  setDuration,
 }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [playingURL, setPlayingURL] = useState<string>();
   const [playing, setPlaying] = useState<boolean>(false);
   const audioRef = useRef<HTMLAudioElement | undefined>();
+
+  useEffect(() => {
+    if (loading === false) {
+      console.log("BRPPPPPPPPPPP", audioRef.current?.duration);
+      setDuration(Math.round(audioRef.current?.duration));
+    }
+  }, [loading]);
 
   useEffect(() => {
     if (playing) {

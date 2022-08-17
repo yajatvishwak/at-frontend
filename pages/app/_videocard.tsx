@@ -64,12 +64,7 @@ const VideoCard: FunctionComponent<VideoCardProps> = ({
         src={data.vidurl}
       ></video>
       <div className="  gap-2  w-full flex flex-col p-4">
-        <div className="line-clamp-3">
-          {data.caption} Lorem ipsum, dolor sit amet consectetur adipisicing
-          elit. Molestias, explicabo! Sunt, aliquid voluptatibus reprehenderit
-          iure praesentium perferendis dolore, asperiores facere ullam
-          laudantium et deserunt veritatis eum odio quasi vero dolorem.
-        </div>
+        <div className="line-clamp-3">{data.caption}</div>
       </div>
     </div>
   );

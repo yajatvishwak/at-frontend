@@ -30,6 +30,7 @@ const Upload: FunctionComponent<UploadProps> = () => {
         type: "success",
         isLoading: false,
       });
+      toast.dismiss(id1);
 
       if (data && data.message) {
         window.location.href = "/app/profile";

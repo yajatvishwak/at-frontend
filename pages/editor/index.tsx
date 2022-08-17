@@ -11,6 +11,8 @@ import clone from "just-clone";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
+import { Player } from "@remotion/player";
+import Composition from "../remotion/Composition";
 interface EditorProps {}
 
 const Editor: FunctionComponent<EditorProps> = () => {
@@ -21,12 +23,13 @@ const Editor: FunctionComponent<EditorProps> = () => {
   const [bgVidAudioLevel, setbgVidAudioLevel] = useState<number>(50);
   const [bgAudioLevel, setbgAudioLevel] = useState<number>(50);
   const [isRendering, setisRendering] = useState<boolean>(false);
+  const [ispreviewOpen, setispreviewOpen] = useState<boolean>(false);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [vid, setVid] = useState<Scene[]>([
     {
       sceneid: "1",
-      duration: 30,
+      duration: 150,
       timeline: [],
     },
   ]);
@@ -287,6 +290,7 @@ const Editor: FunctionComponent<EditorProps> = () => {
         type: "success",
         isLoading: false,
       });
+      toast.dismiss(tos);
 
       setVid(pvid);
     } else {
@@ -370,7 +374,8 @@ const Editor: FunctionComponent<EditorProps> = () => {
         window.location.href = "/app/profile";
       }
       toast.update(tos, {
-        render: "Awwh snap, Something went wrong",
+        render:
+          "Awwh snap, Something went wrong, reload the page and try again",
         type: "error",
         isLoading: false,
       });
@@ -385,6 +390,46 @@ const Editor: FunctionComponent<EditorProps> = () => {
       <ToastContainer />
 
       <ReactTooltip className="text-white" />
+      <input
+        type="checkbox"
+        id="my-modal-3"
+        checked={ispreviewOpen}
+        className="modal-toggle"
+      />
+      {ispreviewOpen && (
+        <div className="modal">
+          <div className="modal-box relative">
+            <div
+              onClick={() => setispreviewOpen(false)}
+              className="btn btn-sm btn-circle absolute right-2 top-2"
+            >
+              ✕
+            </div>
+            <Player
+              component={() => (
+                <Composition
+                  vid={vid}
+                  vidMetaData={{
+                    bgAudio: bgAudio || "",
+                    bgAudioLevel: bgAudioLevel || 0.0,
+                    bgVid: bgVid,
+                    bgVidAudioLevel: bgVidAudioLevel || 0.1,
+                  }}
+                />
+              )}
+              durationInFrames={vid.reduce(
+                (accumulator, current) => accumulator + current.duration,
+                0
+              )}
+              compositionWidth={404}
+              compositionHeight={720}
+              fps={30}
+              controls
+            />
+          </div>
+        </div>
+      )}
+
       <section className="bg-slate-900 text-white p-4 gap-4 min-h-screen h-full grid grid-cols-7 font-dm">
         <div className="col-span-2 grid place-items-center">
           <div>
@@ -463,6 +508,7 @@ const Editor: FunctionComponent<EditorProps> = () => {
                   </div>
                 </div>
                 <div
+                  onClick={() => setispreviewOpen(true)}
                   data-tip="Preview Final Video"
                   className="cursor-pointer ml-auto "
                 >

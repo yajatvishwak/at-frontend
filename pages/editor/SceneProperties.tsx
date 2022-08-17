@@ -89,6 +89,7 @@ const SceneProperties: FunctionComponent<ScenePropertiesProps> = ({
             className="w-full"
             id=""
           />
+          {vidlevel}%
         </div>
       </div>
       <div className="mt-3">
@@ -149,6 +150,7 @@ const SceneProperties: FunctionComponent<ScenePropertiesProps> = ({
             step={0.01}
             id=""
           />
+          {audiolevel}%
         </div>
       </div>
     </div>
