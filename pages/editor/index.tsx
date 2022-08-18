@@ -13,6 +13,7 @@ import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { Player } from "@remotion/player";
 import Composition from "../remotion/Composition";
+import { isWebUri } from "valid-url";
 interface EditorProps {}
 
 const Editor: FunctionComponent<EditorProps> = () => {
@@ -298,24 +299,27 @@ const Editor: FunctionComponent<EditorProps> = () => {
     }
   }
   function addImage() {
-    let pvid = [...vid];
-    pvid[selectedScene].timeline.push({
-      eid: "IM-" + uuidv4(),
-      element: {
-        type: "Image",
-        id: uuidv4(),
-        ilink:
-          "https://c8.alamy.com/comp/DA9PEC/india-south-india-asia-karnataka-bangalore-city-downtown-skyline-business-DA9PEC.jpg",
-      },
-      position: { x: 10, y: 20 },
-      scale: {
-        height: 300,
-        width: 300,
-      },
-      angle: 0,
-      zindex: getZIndex(),
-    });
-    setVid(pvid);
+    let imgurl=prompt() || ""
+    if(isWebUri(imgurl)){
+      let pvid = [...vid];
+      pvid[selectedScene].timeline.push({
+        eid: "IM-" + uuidv4(),
+        element: {
+          type: "Image",
+          id: uuidv4(),
+          ilink:
+            imgurl,
+        },
+        position: { x: 10, y: 20 },
+        scale: {
+          height: 300,
+          width: 300,
+        },
+        angle: 0,
+        zindex: getZIndex(),
+      });
+      setVid(pvid);
+    }
   }
 
   function addText(text: string) {
@@ -351,7 +355,7 @@ const Editor: FunctionComponent<EditorProps> = () => {
         totalduration,
         id,
       };
-      const tos = toast.loading(
+      const tos = toast.loading(  
         "This can take up to 10 mins. Check your profile page to see the final video"
       );
       setisRendering(true);
