@@ -17,14 +17,25 @@ const Toolbox: FunctionComponent<ToolboxProps> = ({
     <div className="p-4">
       <div className="flex items-center justify-between">
         <div>Elements</div>
-        <div
-          onClick={() => {
-            window.location.href =
-              "https://github.com/yajatvishwak/at-frontend/blob/main/EDITOR-USAGE-GUIDE.md";
-          }}
-          className="border cursor-pointer rounded-full px-4 py-1"
-        >
-          How to use
+        <div className="flex gap-3">
+          <div
+            onClick={() => {
+              window.location.href =
+                "https://github.com/yajatvishwak/at-frontend/blob/main/EDITOR-USAGE-GUIDE.md";
+            }}
+            className="border cursor-pointer rounded-full px-4 py-1"
+          >
+            Reuse Box
+          </div>
+          <div
+            onClick={() => {
+              window.location.href =
+                "https://github.com/yajatvishwak/at-frontend/blob/main/EDITOR-USAGE-GUIDE.md";
+            }}
+            className="border cursor-pointer rounded-full px-4 py-1"
+          >
+            How to use
+          </div>
         </div>
       </div>
       <div className="grid grid-cols-3 gap-4 my-4 ">

@@ -9,6 +9,17 @@ interface ProfileProps {}
 
 const Profile: FunctionComponent<ProfileProps> = () => {
   const [data, setData] = useState<VideoDisplay[]>();
+  const [pp, setPP] = useState();
+  const [name, setName] = useState();
+  useEffect(() => {
+    //@ts-ignore
+    if (localStorage.getItem("userid")) setPP(localStorage.getItem("userid"));
+    //@ts-ignore
+    if (localStorage.getItem("username"))
+      //@ts-ignore
+      setName(localStorage.getItem("username"));
+    else window.location.href = "/app/login";
+  }, []);
   const [loading, setLoading] = useState<boolean>(true);
   useEffect(() => {
     axios
@@ -27,7 +38,7 @@ const Profile: FunctionComponent<ProfileProps> = () => {
               caption: item.caption,
               likes: item.likes,
               authordpurl:
-                process.env.NEXT_PUBLIC_URL + "profile/" + item.profilepic,
+                process.env.NEXT_PUBLIC_URL + "profile2/" + item.profilepic,
               _id: item._id,
               authorid: item.userid,
               vidurl: process.env.NEXT_PUBLIC_URL + "video/" + item.filename,
@@ -51,10 +62,10 @@ const Profile: FunctionComponent<ProfileProps> = () => {
           <div className="flex flex-col items-center gap-3 my-20">
             <div className="avatar">
               <div className="w-24 rounded-full ring ring-blue-500 ring-offset-base-100 ring-offset-2">
-                <img src={data && data[0].authordpurl} />
+                <img src={process.env.NEXT_PUBLIC_URL + "profile2/" + pp} />
               </div>
             </div>
-            <div className="text-4xl mt-3">@{data && data[0].authorname}</div>
+            <div className="text-4xl mt-3">@{name}</div>
           </div>
           <div className="grid grid-cols-4  flex-1 gap-4  mt-7">
             {/* vid element */}

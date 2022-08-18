@@ -56,17 +56,7 @@ const Login: FunctionComponent<LoginProps> = () => {
               className="input input-bordered bg-slate-900"
             />
           </div>
-          <div className="flex flex-col gap-2">
-            <label htmlFor="pfp">Profile Pic</label>
-            <input
-              onChange={(e) => {
-                // @ts-ignore
-                setFile(e.target.files[0]);
-              }}
-              type="file"
-              id="pfp"
-            />
-          </div>
+
           <button className="btn mt-5">Submit</button>
         </form>
       </div>

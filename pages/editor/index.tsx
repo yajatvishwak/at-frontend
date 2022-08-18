@@ -539,7 +539,7 @@ const Editor: FunctionComponent<EditorProps> = () => {
                 </div>
                 {isRendering && (
                   <div className=" flex justify-center items-center">
-                    <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
+                    <div className="animate-spin rounded-full h-9 w-9 border-b-2 border-gray-100"></div>
                   </div>
                 )}
                 {!isRendering && (

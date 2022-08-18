@@ -18,12 +18,12 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
         <div className="text-2xl">AmphiTweet</div>
       </div>
       <div className="flex gap-9 items-center ml-auto">
-        <div>AmphiTweet? Whaaaa...</div>
+        <div className="hidden lg:block">AmphiTweet? Whaaaa...</div>
         <div
           onClick={() => {
             window.location.href = "/app/upload";
           }}
-          className="bg-blue-500 rounded-full cursor-pointer hover:scale-95 transition-all hover:bg-blue-600  px-5 py-2 "
+          className=" hidden lg:block bg-blue-500 rounded-full cursor-pointer hover:scale-95 transition-all hover:bg-blue-600  px-5 py-2 "
         >
           Create
         </div>

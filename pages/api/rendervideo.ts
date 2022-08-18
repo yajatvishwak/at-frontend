@@ -47,7 +47,6 @@ const start = async (inputProps: {
     console.log("Attempting to render:", outputLocation);
     await renderMedia({
       composition,
-      parallelism: 1,
       verbose: true,
       serveUrl: bundleLocation,
       codec: "h264",

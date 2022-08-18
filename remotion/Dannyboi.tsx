@@ -1,6 +1,6 @@
 import { fabric } from "fabric";
 import { FunctionComponent, useEffect, useRef, useState } from "react";
-import { continueRender, delayRender } from "remotion";
+import { continueRender, delayRender, Img } from "remotion";
 import { Element } from "./_types/Element";
 
 interface DannyboiProps {
