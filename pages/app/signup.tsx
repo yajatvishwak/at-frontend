@@ -22,6 +22,7 @@ const SignUp: FunctionComponent<SignUpProps> = () => {
     console.log(data);
     if (data && data.id) {
       localStorage.setItem("userid", data.id);
+      window.location.href = "/app";
     } else {
       alert("something went wrong...");
     }
@@ -40,7 +41,7 @@ const SignUp: FunctionComponent<SignUpProps> = () => {
               type="text"
               // @ts-ignore
               onChange={(e) => setUsername(e.target.value)}
-              placeholder="humble politician nograj"
+              placeholder="cool username"
               className="input input-bordered bg-slate-900"
             />
           </div>

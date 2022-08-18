@@ -1,7 +1,7 @@
 import ReactTooltip from "react-tooltip";
 import { FunctionComponent, useEffect, useRef, useState } from "react";
 import { fabric } from "fabric";
-import { Scene } from "../_types/Scene";
+import { Scene } from "../../remotion/_types/Scene";
 import { v4 as uuidv4 } from "uuid";
 import Toolbox from "./Toolbox";
 import SceneList from "./SceneList";
@@ -12,7 +12,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { Player } from "@remotion/player";
-import Composition from "../remotion/Composition";
+import Composition from "../../remotion/Composition";
 import { isWebUri } from "valid-url";
 interface EditorProps {}
 
@@ -396,7 +396,7 @@ const Editor: FunctionComponent<EditorProps> = () => {
       <input
         type="checkbox"
         id="my-modal-3"
-        checked={ispreviewOpen}
+        defaultChecked={ispreviewOpen}
         className="modal-toggle"
       />
       {ispreviewOpen && (

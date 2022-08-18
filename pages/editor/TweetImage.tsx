@@ -1,5 +1,5 @@
 import { FunctionComponent, useState } from "react";
-import { Element } from "../_types/Element";
+import { Element } from "../../remotion/_types/Element";
 
 interface TweetImageProps {
   scene: Element;

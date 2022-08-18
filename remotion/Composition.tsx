@@ -1,6 +1,6 @@
 import { FunctionComponent, useEffect, useState } from "react";
 import { Audio, Sequence, Series, Video } from "remotion";
-import { Scene } from "../_types/Scene";
+import { Scene } from "./_types/Scene";
 import Dannyboi from "./Dannyboi";
 
 interface CompositionProps {

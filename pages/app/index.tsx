@@ -1,7 +1,7 @@
 import axios from "axios";
 import clone from "just-clone";
 import { FunctionComponent, useEffect, useState } from "react";
-import { VideoDisplay } from "../_types/VideoDisplay";
+import { VideoDisplay } from "../../remotion/_types/VideoDisplay";
 import NavBar from "./_navbar";
 import VideoCard from "./_videocard";
 

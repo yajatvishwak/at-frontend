@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import path from "path";
 import { bundle } from "@remotion/bundler";
 import { getCompositions, renderMedia } from "@remotion/renderer";
-import { Scene } from "../_types/Scene";
+import { Scene } from "../../remotion/_types/Scene";
 import axios from "axios";
 
 type Data = {
