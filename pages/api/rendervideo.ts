@@ -42,7 +42,9 @@ const start = async (inputProps: {
   Review "${entry}" for the correct ID.`);
     }
 
-    const outputLocation = path.resolve(`public/out/${compositionId}.mp4`);
+    const outputLocation = path.resolve(
+      `${process.env.NEXT_PUBLIC_RENDER_PATH}/${compositionId}.mp4`
+    );
 
     console.log("Attempting to render:", outputLocation);
     await renderMedia({
