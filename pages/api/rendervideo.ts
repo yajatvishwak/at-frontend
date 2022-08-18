@@ -23,7 +23,7 @@ const start = async (inputProps: {
   try {
     const compositionId = inputProps.vidMetaData.id;
 
-    const entry = "pages/remotion/index";
+    const entry = "remotion/index";
     console.log(path.resolve(entry));
     console.log("Creating a Webpack bundle of the video");
     const bundleLocation = await bundle(path.resolve(entry), () => undefined, {

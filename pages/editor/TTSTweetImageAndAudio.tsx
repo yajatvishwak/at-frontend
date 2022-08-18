@@ -38,7 +38,7 @@ const TTSTweetImageAndAudio: FunctionComponent<TTSTweetImageAndAudioProps> = ({
       {playingURL && (
         <audio
           onLoadedMetadata={(e) => {
-            setDuration(e.currentTarget.duration);
+            setDuration(Math.floor(e.currentTarget.duration));
           }}
           src={playingURL}
           className="hidden"
