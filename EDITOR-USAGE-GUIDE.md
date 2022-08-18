@@ -13,7 +13,7 @@ There are a lot of free cloud image hosting services out there.
     3. Copy Link
 ![copy](https://i.imgur.com/NFoOkkL.png)
 
-    4. Replace the dropbox.com and dl.dropboxusercontent.com in the url
+    4. Replace the dropbox.com to dl.dropboxusercontent.com in the url
 From this:
 ![oldurl](https://i.imgur.com/cSlGPvh.png)
 <br>
