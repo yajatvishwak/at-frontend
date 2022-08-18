@@ -3,10 +3,9 @@ import { FunctionComponent, useEffect, useRef, useState } from "react";
 import { fabric } from "fabric";
 import { Scene } from "../../remotion/_types/Scene";
 import { v4 as uuidv4 } from "uuid";
-import Toolbox from "./Toolbox";
-import SceneList from "./SceneList";
-import SceneControl from "./SceneControl";
-import SceneProperties from "./SceneProperties";
+import Toolbox from "../../components/Toolbox";
+import SceneControl from "../../components/SceneControl";
+
 import clone from "just-clone";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -14,6 +13,8 @@ import axios from "axios";
 import { Player } from "@remotion/player";
 import Composition from "../../remotion/Composition";
 import { isWebUri } from "valid-url";
+import SceneList from "../../components/SceneList";
+import SceneProperties from "../../components/SceneProperties";
 interface EditorProps {}
 
 const Editor: FunctionComponent<EditorProps> = () => {

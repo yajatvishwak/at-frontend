@@ -1,7 +1,7 @@
 import clone from "just-clone";
 import { FunctionComponent, useEffect, useRef, useState } from "react";
-import { Element } from "../../remotion/_types/Element";
-import { Scene } from "../../remotion/_types/Scene";
+import { Element } from "../remotion/_types/Element";
+import { Scene } from "../remotion/_types/Scene";
 import TTSTweetImageAndAudio from "./TTSTweetImageAndAudio";
 import TweetImage from "./TweetImage";
 

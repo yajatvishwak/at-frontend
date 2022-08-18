@@ -1,5 +1,5 @@
 import { Dispatch, FunctionComponent, SetStateAction } from "react";
-import { Scene } from "../../remotion/_types/Scene";
+import { Scene } from "../remotion/_types/Scene";
 
 interface SceneListProps {
   addScene: () => void;

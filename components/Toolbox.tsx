@@ -1,8 +1,8 @@
 import clone from "just-clone";
 import { FunctionComponent, useState } from "react";
-import { Scene } from "../../remotion/_types/Scene";
+import { Scene } from "../remotion/_types/Scene";
 import { v4 as uuidv4 } from "uuid";
-import { Element } from "../../remotion/_types/Element";
+import { Element } from "../remotion/_types/Element";
 
 interface ToolboxProps {
   addText: (text: string) => void;
@@ -89,7 +89,7 @@ const Toolbox: FunctionComponent<ToolboxProps> = ({
             <div className="divide-y-2 overflow-auto">
               {vid.map((scene, index) => {
                 return (
-                  <div>
+                  <div key={scene.sceneid}>
                     <div className="text-2xl font-bold my-3">
                       In Scene {index + 1}
                     </div>
@@ -103,6 +103,7 @@ const Toolbox: FunctionComponent<ToolboxProps> = ({
                             if (item.element.type === "Text")
                               return (
                                 <div
+                                  key={item.eid}
                                   onClick={() => addElement(item)}
                                   className=" border p-3 rounded-xl cursor-pointer text-center flex items-center justify-center w-fit "
                                 >
@@ -122,6 +123,7 @@ const Toolbox: FunctionComponent<ToolboxProps> = ({
                             if (item.element.type === "Image")
                               return (
                                 <div
+                                  key={item.eid}
                                   onClick={() => addElement(item)}
                                   className=" w-32 h-full cursor-pointer border"
                                 >
@@ -146,6 +148,7 @@ const Toolbox: FunctionComponent<ToolboxProps> = ({
                             )
                               return (
                                 <div
+                                  key={item.eid}
                                   onClick={() => addTweetElement(item)}
                                   className=" w-32 h-full cursor-pointer  border"
                                 >

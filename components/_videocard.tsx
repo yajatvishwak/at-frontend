@@ -1,5 +1,5 @@
 import { FunctionComponent } from "react";
-import { VideoDisplay } from "../../remotion/_types/VideoDisplay";
+import { VideoDisplay } from "../remotion/_types/VideoDisplay";
 
 interface VideoCardProps {
   allowDelete: boolean;

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { FunctionComponent, useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
-import NavBar from "./_navbar";
+import NavBar from "../../components/_navbar";
 import "react-toastify/dist/ReactToastify.css";
 
 interface UploadProps {}
