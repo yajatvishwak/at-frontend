@@ -21,3 +21,15 @@ To This:
 
 
 > As an alternative you can use, Imgur.com or any other platform that provides a direct link to your image/video
+
+
+
+# Inserting Background Video/Music
+
+Follow the same steps as Images
+
+
+# Gotchas
+Amphitweet is far from being stable. The current version of the app has a *few* bugs. Some of the known bugs include:
+1. You **HAVE** to play the TTS Tweet for the time to update correctly
+2. Since we are using a single core VPS and video rendering is computationally intense, Render process takes a long time. Usually, 10 sec video takes about 1 min to render. We can fix this with multicore video rendering as the infrastructure grows.
