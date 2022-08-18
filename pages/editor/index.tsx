@@ -299,16 +299,15 @@ const Editor: FunctionComponent<EditorProps> = () => {
     }
   }
   function addImage() {
-    let imgurl=prompt() || ""
-    if(isWebUri(imgurl)){
+    let imgurl = prompt("Image Direct URL:") || "";
+    if (isWebUri(imgurl)) {
       let pvid = [...vid];
       pvid[selectedScene].timeline.push({
         eid: "IM-" + uuidv4(),
         element: {
           type: "Image",
           id: uuidv4(),
-          ilink:
-            imgurl,
+          ilink: imgurl,
         },
         position: { x: 10, y: 20 },
         scale: {
@@ -355,7 +354,7 @@ const Editor: FunctionComponent<EditorProps> = () => {
         totalduration,
         id,
       };
-      const tos = toast.loading(  
+      const tos = toast.loading(
         "This can take up to 10 mins. Check your profile page to see the final video"
       );
       setisRendering(true);
