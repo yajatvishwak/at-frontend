@@ -19,7 +19,7 @@ const TTSTweetImageAndAudio: FunctionComponent<TTSTweetImageAndAudioProps> = ({
 
   useEffect(() => {
     if (loading === false) {
-      setDuration(Math.round(audioRef.current?.duration || 400));
+      setDuration(Math.round(audioRef.current?.duration || 4));
     }
   }, [loading]);
 
