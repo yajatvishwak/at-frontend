@@ -1,8 +1,12 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
 
 interface NavBarProps {}
 
 const NavBar: FunctionComponent<NavBarProps> = () => {
+  const [username, setUsername] = useState<string>();
+  useEffect(() => {
+    setUsername(localStorage.getItem("username") || "Login");
+  }, []);
   return (
     <div className="flex font-dm">
       <div className="flex items-center gap-4 font-bold">
@@ -25,11 +29,13 @@ const NavBar: FunctionComponent<NavBarProps> = () => {
         </div>
         <div
           onClick={() => {
+            if (username === "Login")
+              return (window.location.href = "/app/signup");
             window.location.href = "/app/profile";
           }}
           className=""
         >
-          <div>{localStorage.getItem("username") || "Login"}</div>
+          <div>{username}</div>
         </div>
       </div>
     </div>
