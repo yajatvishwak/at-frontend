@@ -10,21 +10,26 @@ const SignUp: FunctionComponent<SignUpProps> = () => {
 
   async function onSubmit(e: any) {
     e.preventDefault();
-    let fd = new FormData();
-    if (file) fd.append("file", file);
-    fd.append("data", JSON.stringify({ username, password }));
-    fd.append("username", username || "");
-    fd.append("password", password || "");
-    const { data } = await axios.post(
-      process.env.NEXT_PUBLIC_URL + "signup",
-      fd
-    );
-    console.log(data);
-    if (data && data.id) {
-      localStorage.setItem("userid", data.id);
-      window.location.href = "/app";
+    if (username && password) {
+      let fd = new FormData();
+      if (file) fd.append("file", file);
+      fd.append("data", JSON.stringify({ username, password }));
+      fd.append("username", username || "");
+      fd.append("password", password || "");
+      const { data } = await axios.post(
+        process.env.NEXT_PUBLIC_URL + "signup",
+        fd
+      );
+      console.log(data);
+      if (data && data.id) {
+        localStorage.setItem("userid", data.id);
+        localStorage.setItem("username", username);
+        window.location.href = "/app";
+      } else {
+        alert("something went wrong...");
+      }
     } else {
-      alert("something went wrong...");
+      alert("something went wrong");
     }
   }
   return (
@@ -38,6 +43,7 @@ const SignUp: FunctionComponent<SignUpProps> = () => {
           <div className="flex-col flex gap-1">
             <label>Username</label>
             <input
+              required
               type="text"
               // @ts-ignore
               onChange={(e) => setUsername(e.target.value)}
@@ -48,6 +54,7 @@ const SignUp: FunctionComponent<SignUpProps> = () => {
           <div className="flex-col flex gap-1">
             <label>Password</label>
             <input
+              required
               type="text"
               placeholder="safepassword"
               // @ts-ignore
