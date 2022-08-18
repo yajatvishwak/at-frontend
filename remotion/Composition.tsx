@@ -36,7 +36,7 @@ const Composition: FunctionComponent<CompositionProps> = ({
         {vid?.map((scene: Scene) => {
           return (
             <Series.Sequence
-              durationInFrames={scene.duration}
+              durationInFrames={Math.floor(scene.duration)}
               key={scene.sceneid}
             >
               <Dannyboi timeline={scene.timeline} />

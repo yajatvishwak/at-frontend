@@ -420,9 +420,11 @@ const Editor: FunctionComponent<EditorProps> = () => {
                   }}
                 />
               )}
-              durationInFrames={vid.reduce(
-                (accumulator, current) => accumulator + current.duration,
-                0
+              durationInFrames={Math.floor(
+                vid.reduce(
+                  (accumulator, current) => accumulator + current.duration,
+                  0
+                )
               )}
               compositionWidth={404}
               compositionHeight={720}

@@ -18,6 +18,14 @@ const SceneControl: FunctionComponent<SceneControlProps> = ({
   setVid,
   deleteObject,
 }) => {
+  const [time, setTime] = useState<number>();
+  useEffect(() => {
+    if (vid[selectedScene])
+      setTime(Math.floor(vid[selectedScene].duration / 30) || 4);
+  }, []);
+  useEffect(() => {
+    setTime(Math.floor(vid[selectedScene].duration / 30));
+  }, [vid[selectedScene].duration]);
   return (
     <>
       <div className=" col-span-3 rounded-2xl bg-slate-800 p-4">
@@ -26,7 +34,7 @@ const SceneControl: FunctionComponent<SceneControlProps> = ({
           <div className=" flex items-center gap-3">
             <div className="text-sm opacity-50">Duration (in seconds)</div>
             <div>{vid[selectedScene].duration / 30}s</div>
-            {/* <input
+            <input
               type="number"
               className="bg-slate-700 px-3 py-1 rounded-full w-20"
               value={time}
@@ -39,7 +47,7 @@ const SceneControl: FunctionComponent<SceneControlProps> = ({
               }}
               name=""
               id=""
-            /> */}
+            />
           </div>
         </div>
         <div className="grid grid-cols-1 gap-4 my-4 ">
@@ -158,6 +166,7 @@ const SceneControl: FunctionComponent<SceneControlProps> = ({
                   return (
                     <TTSTweetImageAndAudio
                       setDuration={(val: number) => {
+                        console.log("calling duration");
                         const pvid = clone(vid);
                         pvid[selectedScene].duration = val * 30;
                         setVid(pvid);

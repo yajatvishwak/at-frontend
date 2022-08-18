@@ -18,12 +18,6 @@ const TTSTweetImageAndAudio: FunctionComponent<TTSTweetImageAndAudioProps> = ({
   const audioRef = useRef<HTMLAudioElement | undefined>();
 
   useEffect(() => {
-    if (loading === false) {
-      setDuration(Math.round(audioRef.current?.duration || 4));
-    }
-  }, [loading]);
-
-  useEffect(() => {
     if (playing) {
       audioRef.current?.play();
     } else {
@@ -43,6 +37,9 @@ const TTSTweetImageAndAudio: FunctionComponent<TTSTweetImageAndAudioProps> = ({
     <>
       {playingURL && (
         <audio
+          onLoadedMetadata={(e) => {
+            setDuration(e.currentTarget.duration);
+          }}
           src={playingURL}
           className="hidden"
           controls
