@@ -14,7 +14,7 @@ const Login: FunctionComponent<LoginProps> = () => {
         username,
         password,
       });
-      console.log(data);
+      //console.log(data);
       if (data && data.id) {
         localStorage.setItem("userid", data.id);
         localStorage.setItem("username", username);

@@ -10,10 +10,10 @@ const Upload: FunctionComponent<UploadProps> = () => {
   async function uploadVid(file: File) {
     let caption = prompt("What's the caption of this video?");
     if (caption) {
-      console.log(file);
+      //console.log(file);
       let formdata = new FormData();
       formdata.append("file", file);
-      console.log();
+      //console.log();
       formdata.append(
         "data",
         JSON.stringify({ userid: localStorage.getItem("userid"), caption })

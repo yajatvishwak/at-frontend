@@ -35,90 +35,91 @@ const Editor: FunctionComponent<EditorProps> = () => {
     },
   ]);
   useEffect(() => {
-    console.log({ bgVidAudioLevel, bgVid, bgAudio, bgAudioLevel });
+    //console.log({ bgVidAudioLevel, bgVid, bgAudio, bgAudioLevel });
   }, [bgAudio, bgAudioLevel, bgVid, bgVidAudioLevel]);
   useEffect(() => {
     if (!canvas) {
       return;
     }
+    console.log(vid[selectedScene]);
+    if (vid[selectedScene])
+      vid[selectedScene].timeline.map((ele) => {
+        if (ele.element.type === "Tweet") {
+          fabric.Image.fromURL(ele.element.tlink, (img) => {
+            if (canvas) {
+              img.set({
+                // @ts-ignore
+                id: ele.eid,
+                top: ele.position.x,
+                centeredRotation: true,
+                angle: ele.angle,
+                left: ele.position.y,
+              });
 
-    vid[selectedScene].timeline.map((ele) => {
-      if (ele.element.type === "Tweet") {
-        fabric.Image.fromURL(ele.element.tlink, (img) => {
-          if (canvas) {
-            img.set({
-              // @ts-ignore
-              id: ele.eid,
-              top: ele.position.x,
-              centeredRotation: true,
-              angle: ele.angle,
-              left: ele.position.y,
-            });
+              img.scaleToHeight(ele.scale.height);
+              img.scaleToWidth(ele.scale.width);
+              canvas.add(img);
+              img.moveTo(ele.zindex);
+            }
+          });
+        }
+        if (ele.element.type === "TTSTweet") {
+          fabric.Image.fromURL(ele.element.tlink, (img) => {
+            if (canvas) {
+              img.set({
+                // @ts-ignore:next-line
+                id: ele.eid,
+                top: ele.position.x,
+                left: ele.position.y,
+                centeredRotation: true,
+                angle: ele.angle,
+              });
+              img.scaleToHeight(ele.scale.height);
+              img.scaleToWidth(ele.scale.width);
+              canvas.add(img);
+              img.moveTo(ele.zindex);
+            }
+          });
+        }
+        if (ele.element.type === "Image") {
+          fabric.Image.fromURL(ele.element.ilink, (img) => {
+            if (canvas) {
+              img.set({
+                // @ts-ignore:next-line
+                id: ele.eid,
+                top: ele.position.x,
+                left: ele.position.y,
+                width: ele.scale.width,
+                height: ele.scale.height,
+                centeredRotation: true,
+                angle: ele.angle,
+              });
+              img.scaleToHeight(ele.scale.height);
+              img.scaleToWidth(ele.scale.width);
+              canvas.add(img);
+              img.moveTo(ele.zindex);
+            }
+          });
+        }
+        if (ele.element.type === "Text") {
+          const txt = new fabric.Text(ele.element.content, {
+            fill: "white",
+            top: ele.position.x,
+            left: ele.position.y,
+            centeredRotation: true,
+            angle: ele.angle,
+            // @ts-ignore:next-line
+            id: ele.eid,
+          });
 
-            img.scaleToHeight(ele.scale.height);
-            img.scaleToWidth(ele.scale.width);
-            canvas.add(img);
-            img.moveTo(ele.zindex);
-          }
-        });
-      }
-      if (ele.element.type === "TTSTweet") {
-        fabric.Image.fromURL(ele.element.tlink, (img) => {
-          if (canvas) {
-            img.set({
-              // @ts-ignore:next-line
-              id: ele.eid,
-              top: ele.position.x,
-              left: ele.position.y,
-              centeredRotation: true,
-              angle: ele.angle,
-            });
-            img.scaleToHeight(ele.scale.height);
-            img.scaleToWidth(ele.scale.width);
-            canvas.add(img);
-            img.moveTo(ele.zindex);
-          }
-        });
-      }
-      if (ele.element.type === "Image") {
-        fabric.Image.fromURL(ele.element.ilink, (img) => {
-          if (canvas) {
-            img.set({
-              // @ts-ignore:next-line
-              id: ele.eid,
-              top: ele.position.x,
-              left: ele.position.y,
-              width: ele.scale.width,
-              height: ele.scale.height,
-              centeredRotation: true,
-              angle: ele.angle,
-            });
-            img.scaleToHeight(ele.scale.height);
-            img.scaleToWidth(ele.scale.width);
-            canvas.add(img);
-            img.moveTo(ele.zindex);
-          }
-        });
-      }
-      if (ele.element.type === "Text") {
-        const txt = new fabric.Text(ele.element.content, {
-          fill: "white",
-          top: ele.position.x,
-          left: ele.position.y,
-          centeredRotation: true,
-          angle: ele.angle,
-          // @ts-ignore:next-line
-          id: ele.eid,
-        });
+          txt.scaleToHeight(ele.scale.height);
+          txt.scaleToWidth(ele.scale.width);
+          canvas.add(txt);
+          txt.moveTo(ele.zindex);
 
-        txt.scaleToHeight(ele.scale.height);
-        txt.scaleToWidth(ele.scale.width);
-        canvas.add(txt);
-        txt.moveTo(ele.zindex);
-
-        // txt.moveTo(1);
-      }
-    });
+          // txt.moveTo(1);
+        }
+      });
 
     canvas.on("object:modified", function (e) {
       updatePosScaleAngle(
@@ -141,7 +142,7 @@ const Editor: FunctionComponent<EditorProps> = () => {
 
     setCanvas(canvas);
 
-    console.log(vid);
+    //console.log(vid);
 
     return () => canvas.dispose();
   }, [canvasRef, vid, selectedScene]);
@@ -161,7 +162,7 @@ const Editor: FunctionComponent<EditorProps> = () => {
     return vid[selectedScene].timeline.length;
   }
   function custombringForward(zLevel: number) {
-    console.log("passed:", zLevel);
+    //console.log("passed:", zLevel);
     if (zLevel >= vid[selectedScene].timeline.length - 1) return;
     let pvid = clone(vid);
     let currZ = pvid[selectedScene].timeline.findIndex(
@@ -171,16 +172,16 @@ const Editor: FunctionComponent<EditorProps> = () => {
       (item) => item.zindex === zLevel + 1
     );
     pvid[selectedScene].timeline[currZ].zindex += 1;
-    console.log("found next higher z at index", reqZ);
+    //console.log("found next higher z at index", reqZ);
     if (reqZ !== -1) {
       pvid[selectedScene].timeline[reqZ].zindex -= 1;
     }
 
-    console.log(pvid[selectedScene].timeline);
+    //console.log(pvid[selectedScene].timeline);
     setVid(pvid);
   }
   function customsendBack(zLevel: number) {
-    console.log("passed:", zLevel);
+    //console.log("passed:", zLevel);
     if (zLevel <= 0) return;
     let pvid = clone(vid);
     let currZ = pvid[selectedScene].timeline.findIndex(
@@ -190,11 +191,11 @@ const Editor: FunctionComponent<EditorProps> = () => {
       (item) => item.zindex === zLevel - 1
     );
     pvid[selectedScene].timeline[currZ].zindex -= 1;
-    console.log("found next higher z at index", reqZ);
+    //console.log("found next higher z at index", reqZ);
     if (reqZ !== -1) {
       pvid[selectedScene].timeline[reqZ].zindex += 1;
     }
-    console.log(pvid[selectedScene].timeline);
+    //console.log(pvid[selectedScene].timeline);
     setVid(pvid);
   }
   function updatePosScaleAngle(
@@ -206,15 +207,15 @@ const Editor: FunctionComponent<EditorProps> = () => {
     angle: number
   ) {
     let pvid = clone(vid);
-    console.log("this is bruu", pvid[selectedScene].timeline, id);
+    //console.log("this is bruu", pvid[selectedScene].timeline, id);
     const v = pvid[selectedScene].timeline.findIndex((item) => item.eid === id);
-    console.log(v, "found");
+    //console.log(v, "found");
     if (v !== -1) {
       pvid[selectedScene].timeline[v].position = { x, y };
       pvid[selectedScene].timeline[v].scale = { height: h, width: w };
       pvid[selectedScene].timeline[v].angle = angle;
     }
-    // console.log("this do be the timeline", pvid[selectedScene].timeline);
+    // //console.log("this do be the timeline", pvid[selectedScene].timeline);
     setVid(pvid);
   }
 
@@ -224,7 +225,8 @@ const Editor: FunctionComponent<EditorProps> = () => {
     setVid(tvid);
   }
   function removeScene(sceneid: string) {
-    console.log(sceneid);
+    //console.log(sceneid);
+    setSelectedScene(0);
     setVid((pvid: Scene[]) => {
       return pvid.filter((item) => {
         if (item.sceneid !== sceneid) return item;
@@ -365,7 +367,7 @@ const Editor: FunctionComponent<EditorProps> = () => {
         id,
         userid: localStorage.getItem("userid"),
       });
-      console.log(data);
+      //console.log(data);
       setisRendering(false);
       if (data && data.status === "done") {
         toast.update(tos, {
@@ -458,7 +460,7 @@ const Editor: FunctionComponent<EditorProps> = () => {
                           //@ts-ignore
                           (item) => item.eid === canvas?.getActiveObject().id
                         )?.zindex;
-                        console.log("this do be z", z);
+                        //console.log("this do be z", z);
                         if (z !== undefined) custombringForward(z);
                       } else {
                         toast("Select element to bring front");
@@ -489,7 +491,7 @@ const Editor: FunctionComponent<EditorProps> = () => {
                           //@ts-ignore
                           (item) => item.eid === canvas?.getActiveObject().id
                         )?.zindex;
-                        console.log("this do be z", z);
+                        //console.log("this do be z", z);
                         if (z !== undefined) customsendBack(z);
                       } else {
                         toast("Select element to send back");
@@ -574,6 +576,9 @@ const Editor: FunctionComponent<EditorProps> = () => {
             addJustTweet={addJustTweet}
             addImage={addImage}
             addTTSTweet={addTTSTweet}
+            selectedScene={selectedScene}
+            vid={vid}
+            setVid={(vid) => setVid(vid)}
           />
           <div className=" border-purple-500 p-4  grid grid-cols-5 gap-4 mt-auto ">
             <SceneList

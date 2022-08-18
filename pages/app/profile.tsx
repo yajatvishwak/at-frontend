@@ -78,10 +78,10 @@ const Profile: FunctionComponent<ProfileProps> = () => {
                       data={vc}
                       deleteVid={(id: string) => {
                         if (confirm("Are you sure?")) {
-                          console.log("cakked");
+                          //console.log("cakked");
                           let d = clone(data);
                           d = d.filter((item) => item._id !== id);
-                          console.log(d);
+                          //console.log(d);
                           setData(d);
                           axios.get(
                             process.env.NEXT_PUBLIC_URL + "delete/" + id

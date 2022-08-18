@@ -20,7 +20,7 @@ const SignUp: FunctionComponent<SignUpProps> = () => {
         process.env.NEXT_PUBLIC_URL + "signup",
         fd
       );
-      console.log(data);
+      //console.log(data);
       if (data && data.id) {
         localStorage.setItem("userid", data.id);
         localStorage.setItem("username", username);
