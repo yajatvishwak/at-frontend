@@ -44,7 +44,7 @@ const start = async (inputProps: {
 
     const outputLocation = path.resolve(`public/out/${compositionId}.mp4`);
 
-    //console.log("Attempting to render:", outputLocation);
+    console.log("Attempting to render:", outputLocation);
     await renderMedia({
       composition,
       verbose: true,
@@ -53,10 +53,10 @@ const start = async (inputProps: {
       outputLocation,
       inputProps,
     });
-    //console.log("Render done!");
+    console.log("Render done!");
     return true;
   } catch (error) {
-    //console.log(error);
+    console.log(error);
     return false;
   }
 };

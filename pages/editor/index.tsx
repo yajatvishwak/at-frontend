@@ -368,7 +368,7 @@ const Editor: FunctionComponent<EditorProps> = () => {
         id,
         userid: localStorage.getItem("userid"),
       });
-      //console.log(data);
+      console.log(data);
       setisRendering(false);
       if (data && data.status === "done") {
         toast.update(tos, {
@@ -377,14 +377,15 @@ const Editor: FunctionComponent<EditorProps> = () => {
           isLoading: false,
         });
 
-        window.location.href = "/app/profile";
+        return (window.location.href = "/app/profile");
+      } else {
+        toast.update(tos, {
+          render:
+            "Awwh snap, Something went wrong, reload the page and try again",
+          type: "error",
+          isLoading: false,
+        });
       }
-      toast.update(tos, {
-        render:
-          "Awwh snap, Something went wrong, reload the page and try again",
-        type: "error",
-        isLoading: false,
-      });
     } else {
       toast("A caption is needed to publish video to amphitweet");
     }
