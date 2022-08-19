@@ -1,34 +1,43 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+![](https://i.imgur.com/gLAH9Sl.png)
 
-## Getting Started
+# AmphiTweet - frontend
 
-First, run the development server:
+Check us out on: http://amphitweet.ga
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+To run the code:
+    
+    npm i
+    npm run dev
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Backend Part of this project
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+AmphiTweet is a web platform that help users convert Tweets to engaging videos and host them for other users to discover. Think of it like a short-form video creation and generation platform solely based on Twitter.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+Written in Next.js
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+This project was build for the Chirp Dev hackathon 2022
 
-## Learn More
+### The Platform
+Amphitweet houses the created amphis. It is a place where people can discover and post their content.
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### The Editor
+This project features an Editor that helps in the creation of the video on the web.
+There's a lot we can do with the editor currently:
+1. Add Text
+2. Add Images
+3. Add Tweets
+4. Add TTS Tweets
+5. Add Background video/audio
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+We can scale, rotate and move these items freely in the boundaries of the canvas. We can also remove elements.
+### The TTS element
+We get snapshots of tweets from the Twitter API v2 after the editor of the video enters the tweet ID.
+We also use multi speaker speech synthesis to create engaging and almost human like TTS.
 
-## Deploy on Vercel
+Follow the usage guide which contains all instructions to use the editor and the known bugs in the current system
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+HERE:
+https://github.com/yajatvishwak/at-frontend/blob/main/EDITOR-USAGE-GUIDE.md
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
