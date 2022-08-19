@@ -9,7 +9,7 @@ To run the code:
     npm i
     npm run dev
 
-Backend Part of this project
+Backend Part of this project : https://github.com/steinskeeper/amphitweet-backend.git
 
 AmphiTweet is a web platform that help users convert Tweets to engaging videos and host them for other users to discover. Think of it like a short-form video creation and generation platform solely based on Twitter.
 
