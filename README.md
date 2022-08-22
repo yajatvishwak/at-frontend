@@ -2,7 +2,7 @@
 
 # AmphiTweet - frontend
 
-Check us out on: http://amphitweet.ga
+Check us out on: https://amphitweet.ga
 
 To run the code:
     
