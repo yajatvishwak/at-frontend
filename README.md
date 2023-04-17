@@ -1,5 +1,7 @@
 ![](https://i.imgur.com/gLAH9Sl.png)
 
+![Video Demo](https://youtu.be/Y3WaGzsDdgM)
+
 # AmphiTweet - frontend
 
 Check us out on: https://amphitweet.ga
